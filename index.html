@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wild + Rooted</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Nunito:wght@400;600;700;800&display=swap');
+
+    :root {
+      --cream: #F5EDD8;
+      --paper: #FBF7F0;
+      --green: #2D4A32;
+      --green-dark: #234038;
+      --sage: #8BA888;
+      --brown: #5C3D1E;
+      --ink: #2C2416;
+      --tan: #EDE5D8;
+      --border: #D9CEBC;
+      --muted: #C4B99F;
+      --red-bg: #FBE9E7;
+      --red: #BF360C;
+      --yellow-bg: #FFF8E1;
+      --yellow: #E65100;
+      --low-bg: #E8F5E9;
+      --low: #2E7D32;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--brown);
+      font-family: Nunito, sans-serif;
+    }
+
+    button, input, textarea, select {
+      font-family: Nunito, sans-serif;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding-bottom: 32px;
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--cream);
+    }
+
+    .header {
+      background: var(--green);
+      padding: 24px 18px 18px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    }
+
+    .logo {
+      font-family: "Playfair Display", serif;
+      color: var(--cream);
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .tagline {
+      color: var(--sage);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 7px 0 0;
+      font-weight: 800;
+    }
+
+    .tabs {
+      display: flex;
+      background: var(--green-dark);
+      padding: 8px;
+      gap: 8px;
+      position: sticky;
+      top: 77px;
+      z-index: 9;
+    }
+
+    .tab {
+      flex: 1;
+      border: 1.5px solid rgba(245,237,216,.25);
+      color: var(--cream);
+      background: transparent;
+      border-radius: 999px;
+      padding: 9px 8px;
+      font-weight: 800;
+      font-size: 12px;
+      cursor: pointer;
+      opacity: .75;
+    }
+
+    .tab.active {
+      background: var(--cream);
+      color: var(--green);
+      opacity: 1;
+    }
+
+    .card {
+      background: var(--paper);
+      border-radius: 18px;
+      padding: 20px;
+      margin: 14px;
+      box-shadow: 0 2px 12px rgba(44,36,22,.07);
+    }
+
+    .card.primary {
+      border: 2px solid var(--green);
+    }
+
+    .mini-card {
+      background: var(--paper);
+      border: 1.5px solid var(--tan);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 10px rgba(44,36,22,.05);
+    }
+
+    .section-label {
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    .question { margin-bottom: 22px; }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      padding: 10px 15px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: var(--paper);
+      color: var(--brown);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .14s ease;
+    }
+
+    .pill.active {
+      border-color: var(--green);
+      background: var(--green);
+      color: var(--cream);
+      font-weight: 800;
+    }
+
+    .text-input, .textarea {
+      width: 100%;
+      border: 2px solid var(--border);
+      background: #fffaf2;
+      color: var(--brown);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .textarea { min-height: 84px; resize: vertical; }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      background: var(--green);
+      color: var(--cream);
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--green);
+      border: 2px solid var(--green);
+    }
+
+    .btn.muted {
+      background: transparent;
+      color: var(--sage);
+      border: 2px solid var(--muted);
+    }
+
+    .btn.small {
+      width: auto;
+      padding: 9px 13px;
+      font-size: 13px;
+      border-radius: 10px;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .divider {
+      border-top: 1px solid var(--tan);
+      margin: 18px 0;
+    }
+
+    .affirm {
+      background: var(--green-dark);
+      padding: 14px 20px;
+      text-align: center;
+    }
+
+    .affirm p {
+      font-family: "Playfair Display", serif;
+      color: #D4C9A8;
+      font-style: italic;
+      font-size: 15px;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .suggestion-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .emoji {
+      font-size: 38px;
+      width: 46px;
+      text-align: center;
+    }
+
+    .tiny {
+      margin: 0 0 3px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    h1, h2, h3 {
+      font-family: "Playfair Display", serif;
+      color: var(--ink);
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    h2 { font-size: 24px; }
+    h3 { font-size: 17px; }
+
+    .body {
+      font-size: 14px;
+      color: var(--brown);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .muted-text {
+      color: var(--sage);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 6px 0 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .badge.low { background: var(--low-bg); color: var(--low); }
+    .badge.medium { background: var(--yellow-bg); color: var(--yellow); }
+    .badge.high { background: var(--red-bg); color: var(--red); }
+    .badge.low .dot { background: #4CAF50; }
+    .badge.medium .dot { background: #FFC107; }
+    .badge.high .dot { background: #FF5722; }
+
+    .soft-badge {
+      background: #F0EBE0;
+      color: var(--brown);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      background: var(--tan);
+      border-radius: 9px;
+      padding: 6px 10px;
+      color: var(--brown);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .meal-row, .line-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 9px;
+      align-items: flex-start;
+    }
+
+    .meal-label {
+      min-width: 76px;
+      color: var(--sage);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: .06em;
+      padding-top: 2px;
+    }
+
+    .box {
+      background: var(--tan);
+      border-radius: 12px;
+      padding: 13px;
+    }
+
+    .copy-status {
+      font-size: 12px;
+      color: var(--sage);
+      font-weight: 800;
+      text-align: center;
+      margin: 8px 0 0;
+      min-height: 16px;
+    }
+
+    .hidden { display: none !important; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .saved-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .saved-item {
+      background: var(--tan);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .saved-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .footer-note {
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: var(--sage);
+      line-height: 1.5;
+    }
+
+    .small-link {
+      border: none;
+      background: none;
+      color: var(--green);
+      text-decoration: underline;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    @media (min-width: 680px) {
+      .two-col { grid-template-columns: 1fr 1fr; }
+      .logo { font-size: 34px; }
+      .tabs { top: 82px; }
+    }
+
+    @media print {
+      .tabs, .header, .btn, .footer-note { display: none !important; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <p class="logo">Wild + Rooted</p>
+      <p class="tagline">a family rhythm helper</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="today">Today</button>
+      <button class="tab" data-tab="settings">Settings</button>
+      <button class="tab" data-tab="memories">Memories</button>
+    </div>
+
+    <!-- TODAY TAB -->
+    <main id="todayTab">
+      <section id="formScreen" class="card">
+        <div class="question">
+          <p class="section-label">What kind of day?</p>
+          <div class="pills" data-field="dayType">
+            <button class="pill active">Weekday</button>
+            <button class="pill">Weekend</button>
+            <button class="pill">PTO Day</button>
+            <button class="pill">Show Day</button>
+            <button class="pill">Night Before Show</button>
+            <button class="pill">Big Show Window</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Is dad around?</p>
+          <div class="pills" data-field="dad">
+            <button class="pill active">Solo day</button>
+            <button class="pill">Dad home by 5:30</button>
+            <button class="pill">Dad home all day</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Weather</p>
+          <div class="pills" data-field="weather">
+            <button class="pill active">Sunny</button>
+            <button class="pill">Cloudy</button>
+            <button class="pill">Rainy</button>
+            <button class="pill">Stormy</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Temperature</p>
+          <div class="pills" data-field="temp">
+            <button class="pill">Cool under 65</button>
+            <button class="pill active">Nice 65-80</button>
+            <button class="pill">Hot 80+</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Mom's energy</p>
+          <div class="pills" data-field="energy">
+            <button class="pill">Full tank</button>
+            <button class="pill active">Half tank</button>
+            <button class="pill">Running on fumes</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Budget mode</p>
+          <div class="pills" data-field="budget">
+            <button class="pill active">Free day</button>
+            <button class="pill">Low spend $5-15</button>
+            <button class="pill">Normal budget</button>
+            <button class="pill">Bigger outing okay</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">How far will you go?</p>
+          <div class="pills" data-field="location">
+            <button class="pill">Home only</button>
+            <button class="pill active">Local area</button>
+            <button class="pill">Lincoln if worth it</button>
+            <button class="pill">Lincoln for sure</button>
+            <button class="pill">Anywhere</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">How are the kids?</p>
+          <div class="pills" data-field="kids">
+            <button class="pill active">All good</button>
+            <button class="pill">Someone is off</button>
+            <button class="pill">Everyone is melting</button>
+            <button class="pill">Pure chaos</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Yesterday / last outing recovery</p>
+          <div class="pills" data-field="yesterday">
+            <button class="pill active">Normal</button>
+            <button class="pill">High recovery yesterday</button>
+            <button class="pill">Need a reset day</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Calendar reality</p>
+          <textarea id="calendarText" class="textarea" placeholder="Optional: paste today's events, locations, t-ball, Sports RTC, appointments, show times, etc. Example: T-ball in Lincoln at 10am. Sports RTC at 5:30."></textarea>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Extra notes</p>
+          <textarea id="extraNotes" class="textarea" placeholder="Optional: bad sleep, need groceries, boys need movement, don't want to cook, etc."></textarea>
+        </div>
+
+        <button class="btn" id="generateBtn">Give me my day</button>
+      </section>
+
+      <section id="resultScreen" class="hidden">
+        <div class="affirm">
+          <p id="affirmText"></p>
+        </div>
+
+        <div class="card primary">
+          <div class="suggestion-head">
+            <div class="emoji" id="primaryEmoji">🌿</div>
+            <div>
+              <p class="tiny">Today's suggestion</p>
+              <h2 id="primaryName">Slow Home Day</h2>
+            </div>
+          </div>
+
+          <p class="body" id="whyItWorks"></p>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <span class="badge medium" id="recoveryBadge"><span class="dot"></span><span>Medium recovery</span></span>
+            <span class="soft-badge" id="budgetBadge">Free</span>
+          </div>
+          <p class="muted-text" id="dadNote"></p>
+          <p class="muted-text" id="travelNote"></p>
+          <p class="muted-text" id="contextSummary"></p>
+
+          <div class="divider"></div>
+
+          <p class="section-label">Why this won today</p>
+          <div class="tags" id="whyTags"></div>
+
+          <div class="divider"></div>
+
+          <p class="section-label">Grab before you go</p>
+          <div class="tags" id="prepList"></div>
+
+          <div class="divider"></div>
+
+          <p class="section-label">Meal plan</p>
+          <div id="mealPlan"></div>
+
+          <div class="divider"></div>
+
+          <p class="section-label">Homeschool tie-in</p>
+          <p class="body" id="homeschoolTieIn"></p>
+
+          <div class="divider"></div>
+
+          <p class="section-label">What this will feel like</p>
+          <p class="body" id="nostalgiaFactor" style="font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--green);"></p>
+
+          <div class="divider"></div>
+
+          <p class="section-label">Watch or listen</p>
+          <div class="box">
+            <p class="body" style="font-weight:900;color:var(--ink);" id="mediaTitle"></p>
+            <p class="muted-text" id="mediaPlatform"></p>
+            <p class="body" id="mediaNote" style="font-size:13px;margin-top:7px;"></p>
+          </div>
+
+          <div id="inviteBlock">
+            <div class="divider"></div>
+            <p class="section-label">Invite suggestion</p>
+            <p class="body" style="font-weight:900;color:var(--ink);margin-bottom:8px;" id="inviteWho"></p>
+            <div class="box">
+              <p class="body" id="inviteText"></p>
+            </div>
+            <button class="btn secondary" style="margin-top:10px;" id="copyInviteBtn">Copy invite text</button>
+            <p class="copy-status" id="copyStatus"></p>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="section-label">Recovery plan</p>
+          <div id="recoveryPlan"></div>
+        </div>
+
+        <div class="card">
+          <p class="section-label">Or if that does not land...</p>
+          <div id="backups"></div>
+        </div>
+
+        <div class="card">
+          <p class="section-label">Memory note</p>
+          <textarea id="memoryNote" class="textarea" placeholder="Later: What did they love? What was funny? Was it worth the energy?"></textarea>
+          <div class="row" style="margin-top:10px;">
+            <button class="btn secondary small" id="saveMemoryBtn">Save memory</button>
+            <button class="btn muted small" id="printBtn">Print day</button>
+            <button class="btn muted small" id="newDayBtn">Start new day</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- SETTINGS TAB -->
+    <main id="settingsTab" class="hidden">
+      <section class="card">
+        <p class="section-label">Family defaults</p>
+        <p class="body">These are saved in your browser only. No login, no server, no tracking.</p>
+        <div class="divider"></div>
+
+        <p class="section-label">People to invite</p>
+        <textarea id="peopleSettings" class="textarea"></textarea>
+        <p class="muted-text">Format: Name | Area | Type. One per line.</p>
+
+        <div class="divider"></div>
+
+        <p class="section-label">Passes / coupons</p>
+        <textarea id="passesSettings" class="textarea"></textarea>
+
+        <div class="divider"></div>
+
+        <p class="section-label">Streaming / media</p>
+        <textarea id="streamingSettings" class="textarea"></textarea>
+
+        <div class="divider"></div>
+
+        <button class="btn" id="saveSettingsBtn">Save settings</button>
+        <p class="copy-status" id="settingsSaved"></p>
+      </section>
+
+      <section class="card">
+        <p class="section-label">GitHub Pages note</p>
+        <p class="body">
+          To use this on GitHub Pages, save this file as <strong>index.html</strong>, put it in a repo, then enable Pages from the repo settings.
+          This version is rule-based and does not need an API key.
+        </p>
+      </section>
+    </main>
+
+    <!-- MEMORIES TAB -->
+    <main id="memoriesTab" class="hidden">
+      <section class="card">
+        <div class="row" style="justify-content:space-between;">
+          <div>
+            <p class="section-label">Saved memories</p>
+            <p class="body">Tiny notes from days you want to remember.</p>
+          </div>
+          <button class="btn muted small" id="clearMemoriesBtn">Clear</button>
+        </div>
+        <div class="divider"></div>
+        <div id="memoriesList" class="saved-list"></div>
+      </section>
+    </main>
+
+    <p class="footer-note">
+      Wild + Rooted is a prototype. It helps choose realistic rhythms; you still get the final mom vote.
+    </p>
+  </div>
+
+  <script>
+    const DEFAULT_PEOPLE = [
+      { name: "Jade + Roman", area: "Henderson/York", type: "casual" },
+      { name: "Krystal + Braxton + Junior + Ari + Kash", area: "Lincoln", type: "casual" },
+      { name: "Katrina + Eden + Ezra", area: "Lincoln", type: "casual" },
+      { name: "Mason", area: "Lincoln", type: "family" },
+      { name: "Donna", area: "Lincoln", type: "family" },
+      { name: "Grandma/Grandpa", area: "Lincoln", type: "family" }
+    ];
+
+    const DEFAULT_PASSES = [
+      "Lincoln Children's Zoo pass",
+      "Kids Bowl Free May-September",
+      "Fun City until moving",
+      "Sports RTC membership",
+      "Runza ice cream coupons"
+    ];
+
+    const DEFAULT_STREAMING = [
+      "Netflix",
+      "Disney+",
+      "Amazon Prime",
+      "YouTube / YouTube Kids",
+      "Paramount+",
+      "Libby",
+      "Spotify"
+    ];
+
+    const STORAGE = {
+      people: "wildRooted_people",
+      passes: "wildRooted_passes",
+      streaming: "wildRooted_streaming",
+      memories: "wildRooted_memories"
+    };
+
+    const activities = [
+      {
+        id: "home-water",
+        name: "Backyard Water Play + Popsicles",
+        emoji: "💦",
+        area: "Home",
+        type: "home",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Nice 65-80", "Hot 80+"],
+        prep: ["towels", "dry clothes", "water bottles", "swim diapers if needed", "popsicles"],
+        reasons: ["free", "low prep", "easy exit", "good for solo day", "counts as summer"],
+        homeschool: "Let the boys pour, scoop, compare full and empty, and help hang towels afterward. That is Montessori practical life and real sensory learning without turning it into a lesson.",
+        nostalgia: "It feels like sticky popsicle hands, towels on the porch, and the kind of summer afternoon kids remember without knowing why.",
+        media: { title: "Search manually: Magic Tree House audiobook", platform: "Libby or Spotify", type: "audiobook", note: "Good for quiet time after water play." },
+        meals: { before: "Protein snack before going outside so nobody melts down hungry.", during: "Water bottles outside; keep snacks simple and not messy.", after: "Snack plate or freezer meal. Do not make a complicated dinner after water cleanup." },
+        recoveryPlan: ["No second outing today.", "Towels straight to laundry or hang outside so cleanup does not become tomorrow's problem."]
+      },
+      {
+        id: "library",
+        name: "Library + Snack Picnic",
+        emoji: "📚",
+        area: "Local",
+        type: "indoor",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["library bag", "water bottles", "diapers", "wipes", "simple snack"],
+        reasons: ["free", "low recovery", "rainy day friendly", "homeschool rich", "easy reset"],
+        homeschool: "Let each boy pick one book. At home, ask for a tiny narration: what happened, who was in it, and what they noticed.",
+        nostalgia: "It feels like canvas library bags, picture books stacked too high, and a quiet little picnic that makes an ordinary day feel cared for.",
+        media: { title: "Search manually: Frog and Toad", platform: "Libby or YouTube", type: "audiobook", note: "Soft, gentle, and very Charlotte Mason-friendly for winding down." },
+        meals: { before: "Easy breakfast or eggs before leaving.", during: "Pack a snack picnic; avoid buying food if budget is tight.", after: "Simple dinner: sandwiches, eggs, leftovers, or freezer meal." },
+        recoveryPlan: ["Put library books in one basket when you get home.", "Use quiet time right after so the outing ends softly."]
+      },
+      {
+        id: "bowling",
+        name: "Kids Bowl Free + Ice Cream Stop",
+        emoji: "🎳",
+        area: "Local",
+        type: "indoor",
+        budget: "Low — about $5-15",
+        recovery: "medium",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["socks", "water bottles", "diapers", "wipes", "small snacks", "Runza ice cream coupons"],
+        reasons: ["90s childhood", "contained play", "movement", "coupon friendly", "easy endpoint"],
+        homeschool: "Let Ace help count pins and turns. Afterward, ask each boy to narrate what was funny or hard.",
+        nostalgia: "It feels like bowling alley air, rental shoes, sticky ice cream fingers, and sleepy boys on the ride home.",
+        media: { title: "Search manually: Adventures in Odyssey", platform: "Spotify or YouTube", type: "podcast", note: "A good car audio option if everyone needs help calming down after." },
+        meals: { before: "Protein snack before leaving.", during: "Water and one small snack; ice cream can be the treat.", after: "Very easy dinner at home. Bowling plus ice cream is enough novelty for the day." },
+        recoveryPlan: ["No second outing today.", "Bath or pajamas early if everyone comes home wild."]
+      },
+      {
+        id: "fun-city",
+        name: "Fun City Short Session",
+        emoji: "🛝",
+        area: "Local",
+        type: "indoor",
+        budget: "Low to moderate",
+        recovery: "medium",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["socks", "water bottles", "diapers", "wipes", "extra clothes", "snacks", "Runza ice cream coupons"],
+        reasons: ["contained", "movement", "available until moving", "works for mixed ages", "easy exit"],
+        homeschool: "This is practical social learning: waiting, turn-taking, body control, and noticing when our bodies need a break.",
+        nostalgia: "It feels like a classic play-place afternoon: loud, a little chaotic, but exactly the kind of simple summer fun kids love.",
+        media: { title: "Search manually: Bluey — The Creek", platform: "Disney+", type: "show", note: "A short wind-down episode that pairs well with movement and imaginative play." },
+        meals: { before: "Feed everyone before going so the outing is not carried by snacks.", during: "Water bottles and one tidy snack.", after: "Runza ice cream if it still feels fun; easy dinner later." },
+        recoveryPlan: ["Set a timer or clear end time before going in.", "Plan a quiet home reset after."]
+      },
+      {
+        id: "lincoln-zoo",
+        name: "Lincoln Children's Zoo",
+        emoji: "🦁",
+        area: "Lincoln",
+        type: "outing",
+        budget: "Low — admission covered by pass",
+        recovery: "medium",
+        dad: "sometimes",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Cool under 65", "Nice 65-80"],
+        prep: ["zoo pass", "stroller", "water bottles", "snacks", "diapers", "wipes", "sunscreen", "hats", "extra clothes"],
+        reasons: ["pass already paid", "nature rich", "Charlotte Mason", "Lincoln stack", "worth it if already in Lincoln"],
+        homeschool: "Choose one animal to observe closely. Ask: how does it move, what might it eat, and what would its home need?",
+        nostalgia: "It feels like stroller wheels on warm pavement, animal sounds, packed snacks, and a childhood memory that does not need to be fancy.",
+        media: { title: "Search manually: Wild Kratts", platform: "Amazon Prime or YouTube", type: "show", note: "Good animal tie-in, but check availability on your apps." },
+        meals: { before: "Eat before leaving Henderson or pack a car breakfast.", during: "Packed lunch strongly recommended to keep cost down.", after: "Simple dinner or drive-home snack plate; do not overcook tonight." },
+        recoveryPlan: ["Do quiet time or audiobook on the drive home.", "Plan low expectations for the rest of the day."]
+      },
+      {
+        id: "morrill",
+        name: "Morrill Hall Dinosaur Morning",
+        emoji: "🦖",
+        area: "Lincoln",
+        type: "museum",
+        budget: "Moderate — about $20-30 depending on adults",
+        recovery: "medium",
+        dad: "sometimes",
+        weather: ["Sunny", "Cloudy", "Rainy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["water bottles", "diapers", "wipes", "small snacks", "extra clothes"],
+        reasons: ["indoor", "homeschool rich", "Lincoln stack", "rainy day friendly", "dinosaurs"],
+        homeschool: "Let the boys pick one fossil or animal to remember. At lunch, ask them to tell back what they saw in their own words.",
+        nostalgia: "It feels like dim museum halls, giant bones, snack crumbs in the car, and a slow curious morning.",
+        media: { title: "Search manually: Magic School Bus dinosaur episode", platform: "Netflix or YouTube", type: "show", note: "Check your streaming apps; do not assume availability." },
+        meals: { before: "Eat before museum if possible.", during: "Pack snacks for before/after, not inside exhibits.", after: "Picnic lunch or easy Lincoln stop if budget allows." },
+        recoveryPlan: ["Keep the visit short enough to end on a win.", "Do not add a second intense stop unless Dad is present and everyone is still regulated."]
+      },
+      {
+        id: "pioneers",
+        name: "Pioneers Park Nature Walk",
+        emoji: "🌳",
+        area: "Lincoln",
+        type: "nature",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Cool under 65", "Nice 65-80"],
+        prep: ["water bottles", "sunscreen", "bug spray", "stroller", "snacks", "diapers", "wipes"],
+        reasons: ["free", "nature study", "low recovery", "Lincoln stack", "movement"],
+        homeschool: "Do a tiny nature study: find something smooth, something rough, something alive, and something that makes a sound.",
+        nostalgia: "It feels like dusty shoes, sticks in little hands, and the kind of outdoor wandering that makes kids feel bigger than they are.",
+        media: { title: "Search manually: Julie's Library", platform: "Spotify", type: "podcast", note: "Gentle listening for the way home." },
+        meals: { before: "Snack before walking.", during: "Pack water and a tidy snack.", after: "Picnic or easy at-home dinner depending on timing." },
+        recoveryPlan: ["Shoes off by the door.", "Quiet activity or bath if the park dirt comes home with you."]
+      },
+      {
+        id: "splash",
+        name: "Splash Pad + Snack Picnic",
+        emoji: "☀️",
+        area: "Local",
+        type: "water",
+        budget: "Free",
+        recovery: "medium",
+        dad: "no",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Hot 80+"],
+        prep: ["swim bag", "towels", "dry clothes", "swim diapers", "sunscreen", "water bottles", "snacks", "wet bag"],
+        reasons: ["free", "hot day", "movement", "summer memory", "sensory play"],
+        homeschool: "This is body awareness, water safety, sharing space, and practical independence: shoes, towels, dry clothes, cleanup.",
+        nostalgia: "It feels like wet footprints, sunscreen smell, and the kind of hot-day memory that makes summer feel like summer.",
+        media: { title: "Search manually: Raffi summer songs", platform: "Spotify or YouTube", type: "music", note: "Simple happy background for after the water chaos." },
+        meals: { before: "Eat a real snack first.", during: "Pack cold water and easy picnic food.", after: "Freezer meal or no-cook dinner. Wet outings are more work than they look." },
+        recoveryPlan: ["Put wet clothes directly into the washer or wet bag.", "No errands after unless absolutely necessary."]
+      },
+      {
+        id: "sac",
+        name: "SAC Museum Core Memory Day",
+        emoji: "✈️",
+        area: "Ashland",
+        type: "core",
+        budget: "Moderate to high",
+        recovery: "high",
+        dad: "yes",
+        weather: ["Sunny", "Cloudy", "Rainy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["water bottles", "snacks", "diapers", "wipes", "extra clothes", "stroller", "packed lunch or lunch plan", "portable charger"],
+        reasons: ["Core Memory", "dad preferred", "big planes", "plan ahead", "not casual"],
+        homeschool: "Before going, talk about flight and machines. Afterward, let Ace narrate one plane he remembers and build one from blocks or paper.",
+        nostalgia: "It feels like a big family adventure: wide museum floors, huge airplanes, and kids looking tiny under enormous wings.",
+        media: { title: "Search manually: airplane read-aloud or flight documentary for kids", platform: "YouTube", type: "youtube", note: "Use as a short preview, not a whole screen day." },
+        meals: { before: "Real breakfast before leaving.", during: "Packed snacks and a lunch plan; do not rely on impulse food.", after: "Very easy dinner or planned takeout." },
+        recoveryPlan: ["Keep the next morning quiet.", "Save one sentence memory when you get home."]
+      },
+      {
+        id: "omaha-zoo",
+        name: "Omaha Zoo Core Memory Day",
+        emoji: "🐘",
+        area: "Omaha",
+        type: "core",
+        budget: "High",
+        recovery: "high",
+        dad: "yes",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Cool under 65", "Nice 65-80"],
+        prep: ["stroller", "baby carrier", "cooler", "packed lunch", "water bottles", "sunscreen", "hats", "diapers", "wipes", "extra clothes", "portable charger", "comfort item"],
+        reasons: ["monthly Core Memory", "dad strongly preferred", "plan ahead", "big adventure", "not solo"],
+        homeschool: "Pick one habitat to focus on instead of trying to see everything. Ask what each animal needs: food, shelter, water, space, and safety.",
+        nostalgia: "It feels like the grand summer outing: packed cooler, long walkways, sticky kids, and everyone tired in the best possible way.",
+        media: { title: "Search manually: Wild Kratts animal episode", platform: "Amazon Prime or YouTube", type: "show", note: "Check availability; use before or after as a themed connection." },
+        meals: { before: "Big breakfast before leaving.", during: "Packed lunch saves a lot here. Buy only a treat if budget allows.", after: "No-cook dinner or takeout. This is not the night to be heroic." },
+        recoveryPlan: ["Plan a slow day after.", "Save photos and one memory sentence while the day is still fresh."]
+      },
+      {
+        id: "slow-home",
+        name: "Slow Home Day",
+        emoji: "🏡",
+        area: "Home",
+        type: "home",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy", "Stormy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["water bottles", "simple snack", "one basket of toys", "one audiobook or playlist"],
+        reasons: ["lowest recovery", "good for chaos", "moving season friendly", "no drive", "mom energy protected"],
+        homeschool: "Choose one practical life job: socks, windows, muffins, towels, or sweeping. Small children learn through real work beside you.",
+        nostalgia: "It feels like an ordinary childhood day: slow breakfast, floor play, one little chore, and the safety of not rushing anywhere.",
+        media: { title: "Search manually: Frog and Toad or Little Bear", platform: "YouTube or Paramount+", type: "show", note: "Gentle enough for a reset day; check availability first." },
+        meals: { before: "Slow breakfast, no performance.", during: "Snack basket or muffin plate.", after: "Use the easiest dinner available. Home days do not require fancy meals." },
+        recoveryPlan: ["Let the house be lived in, not perfected.", "Do a 10-minute reset before dinner, not an all-day cleanup battle."]
+      }
+    ];
+
+    let form = {
+      dayType: "Weekday",
+      dad: "Solo day",
+      weather: "Sunny",
+      temp: "Nice 65-80",
+      energy: "Half tank",
+      budget: "Free day",
+      location: "Local area",
+      kids: "All good",
+      yesterday: "Normal"
+    };
+
+    let currentResult = null;
+
+    function getPeople() {
+      const raw = localStorage.getItem(STORAGE.people);
+      if (!raw) return DEFAULT_PEOPLE;
+      return raw.split("\n").map(line => {
+        const [name, area, type] = line.split("|").map(s => (s || "").trim());
+        return name ? { name, area: area || "Local", type: type || "casual" } : null;
+      }).filter(Boolean);
+    }
+
+    function getPasses() {
+      const raw = localStorage.getItem(STORAGE.passes);
+      return raw ? raw.split("\n").filter(Boolean) : DEFAULT_PASSES;
+    }
+
+    function getStreaming() {
+      const raw = localStorage.getItem(STORAGE.streaming);
+      return raw ? raw.split("\n").filter(Boolean) : DEFAULT_STREAMING;
+    }
+
+    function saveDefaultsIfNeeded() {
+      if (!localStorage.getItem(STORAGE.people)) {
+        localStorage.setItem(STORAGE.people, DEFAULT_PEOPLE.map(p => `${p.name} | ${p.area} | ${p.type}`).join("\n"));
+      }
+      if (!localStorage.getItem(STORAGE.passes)) {
+        localStorage.setItem(STORAGE.passes, DEFAULT_PASSES.join("\n"));
+      }
+      if (!localStorage.getItem(STORAGE.streaming)) {
+        localStorage.setItem(STORAGE.streaming, DEFAULT_STREAMING.join("\n"));
+      }
+      if (!localStorage.getItem(STORAGE.memories)) {
+        localStorage.setItem(STORAGE.memories, JSON.stringify([]));
+      }
+    }
+
+    function selectPill(button) {
+      const group = button.closest(".pills");
+      const field = group.dataset.field;
+      group.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+      button.classList.add("active");
+      form[field] = button.textContent.trim();
+    }
+
+    function hasCalendarWord(words) {
+      const text = (document.getElementById("calendarText").value + " " + document.getElementById("extraNotes").value).toLowerCase();
+      return words.some(w => text.includes(w.toLowerCase()));
+    }
+
+    function calendarInLincoln() {
+      return hasCalendarWord(["lincoln", "t-ball", "tball", "sports rtc", "rtc", "morrill", "pioneers", "zoo"]);
+    }
+
+    function showSoon() {
+      return form.dayType === "Show Day" || form.dayType === "Night Before Show" || form.dayType === "Big Show Window" || hasCalendarWord(["show", "craft fair", "vendor", "booth"]);
+    }
+
+    function isDadAvailable() {
+      return form.dad === "Dad home all day" || form.dayType === "Weekend" || form.dayType === "PTO Day";
+    }
+
+    function isLowEnergy() {
+      return form.energy === "Running on fumes" || form.kids === "Everyone is melting" || form.kids === "Pure chaos" || form.yesterday !== "Normal";
+    }
+
+    function isRainy() {
+      return form.weather === "Rainy" || form.weather === "Stormy";
+    }
+
+    function isHot() {
+      return form.temp === "Hot 80+";
+    }
+
+    function areaAllowed(activity) {
+      if (form.location === "Home only") return activity.area === "Home";
+      if (form.location === "Local area") return ["Home", "Local"].includes(activity.area);
+      if (form.location === "Lincoln if worth it") {
+        return ["Home", "Local"].includes(activity.area) || (activity.area === "Lincoln" && (calendarInLincoln() || !isLowEnergy()));
+      }
+      if (form.location === "Lincoln for sure") return !["Omaha", "Ashland"].includes(activity.area);
+      return true;
+    }
+
+    function scoreActivity(a) {
+      let score = 0;
+      const why = [];
+
+      if (!areaAllowed(a)) return { score: -999, why: [] };
+
+      if (!a.weather.includes(form.weather)) {
+        if (a.type === "indoor" && isRainy()) score += 2;
+        else return { score: -999, why: [] };
+      }
+
+      if (!a.temp.includes(form.temp)) {
+        if (a.type === "indoor") score += 1;
+        else return { score: -999, why: [] };
+      }
+
+      if (a.dad === "yes" && !isDadAvailable()) return { score: -999, why: [] };
+
+      if (a.id === "omaha-zoo" && (!isDadAvailable() || form.budget !== "Bigger outing okay")) return { score: -999, why: [] };
+      if (a.id === "sac" && (!isDadAvailable() || form.budget === "Free day")) return { score: -999, why: [] };
+
+      if (isLowEnergy()) {
+        if (a.recovery === "low") { score += 10; why.push("low recovery"); }
+        if (a.area === "Home") { score += 8; why.push("protects mom's energy"); }
+        if (a.recovery === "high") score -= 12;
+      } else {
+        score += 3;
+      }
+
+      if (showSoon()) {
+        if (["slow-home", "library", "home-water"].includes(a.id)) { score += 9; why.push("show rhythm friendly"); }
+        if (a.recovery === "high") score -= 20;
+        if (a.area !== "Home" && a.area !== "Local") score -= 10;
+      }
+
+      if (calendarInLincoln()) {
+        if (a.area === "Lincoln") { score += 14; why.push("stacks with Lincoln plans"); }
+        if (a.area === "Home") score -= 3;
+      } else {
+        if (a.area === "Lincoln" && form.location !== "Lincoln for sure" && form.location !== "Anywhere") score -= 6;
+      }
+
+      if (form.budget === "Free day") {
+        if (a.budget.includes("Free") || a.budget.includes("covered")) { score += 8; why.push("budget protected"); }
+        if (a.budget.includes("High") || a.budget.includes("Moderate")) score -= 8;
+      }
+
+      if (form.budget === "Low spend $5-15") {
+        if (a.budget.includes("Low") || a.budget.includes("Free")) score += 5;
+        if (a.budget.includes("High")) score -= 8;
+      }
+
+      if (form.budget === "Bigger outing okay" && isDadAvailable()) {
+        if (a.type === "core") { score += 9; why.push("Core Memory Day possible"); }
+      }
+
+      if (form.kids === "Pure chaos" || form.kids === "Everyone is melting") {
+        if (a.id === "slow-home") { score += 16; why.push("chaos-aware"); }
+        if (a.recovery === "high") score -= 15;
+      }
+
+      if (form.dad === "Solo day") {
+        if (a.dad === "no") { score += 5; why.push("manageable without Dad"); }
+        if (a.recovery === "high") score -= 10;
+      }
+
+      if (form.dad === "Dad home all day") {
+        if (a.dad === "yes" || a.type === "core") score += 5;
+      }
+
+      if (isRainy()) {
+        if (a.type === "indoor" || a.id === "slow-home" || a.id === "library") { score += 7; why.push("rain-friendly"); }
+      }
+
+      if (isHot()) {
+        if (a.id === "splash" || a.id === "home-water") { score += 8; why.push("hot day appropriate"); }
+        if (["lincoln-zoo", "pioneers", "omaha-zoo"].includes(a.id)) score -= 8;
+      }
+
+      if (form.dayType === "Weekend" && isDadAvailable()) {
+        if (a.area === "Lincoln" || a.type === "core") score += 3;
+      }
+
+      if (a.reasons.includes("90s childhood")) score += 2;
+      if (a.reasons.includes("homeschool rich") || a.reasons.includes("Charlotte Mason")) score += 2;
+
+      return { score, why: [...new Set(why.concat(a.reasons.slice(0, 3)))] };
+    }
+
+    function selectBestActivities() {
+      const scored = activities.map(a => ({ ...a, ...scoreActivity(a) }))
+        .filter(a => a.score > -100)
+        .sort((a, b) => b.score - a.score);
+
+      if (!scored.length) {
+        const fallback = activities.find(a => a.id === "slow-home");
+        return [{ ...fallback, why: ["lowest recovery", "always available", "mom energy protected"] }];
+      }
+      return scored;
+    }
+
+    function getInviteFor(activity) {
+      const people = getPeople();
+      let candidates = [];
+
+      if (activity.area === "Lincoln") candidates = people.filter(p => (p.area || "").toLowerCase().includes("lincoln"));
+      else if (activity.area === "Local" || activity.area === "Home") candidates = people.filter(p => (p.area || "").toLowerCase().includes("henderson") || (p.area || "").toLowerCase().includes("york"));
+      else if (activity.type === "core") candidates = people.filter(p => (p.area || "").toLowerCase().includes("lincoln"));
+
+      if (!candidates.length || activity.area === "Home") return { who: null, text: null };
+
+      const who = candidates[0].name;
+      const planAhead = activity.type === "core" || activity.area === "Omaha" || activity.area === "Ashland";
+
+      let text;
+      if (planAhead) {
+        text = `Hey! We are thinking about planning a bigger ${activity.name} day soon. No pressure, but if you are interested, I would love to find a day that works and make it a fun kid adventure together.`;
+      } else {
+        text = `Hey! We are thinking about doing ${activity.name} today. We are keeping it low-key, but if you are free we would love for you to join us!`;
+        if (activity.id === "fun-city" || activity.id === "bowling") {
+          text += " Maybe free ice cream from Runza after? I have ice cream coupons. :)";
+        }
+      }
+
+      return { who, text };
+    }
+
+    function getWhyItWorks(activity, whyTags) {
+      const pieces = [];
+
+      if (activity.id === "slow-home") {
+        pieces.push("Today does not need to become a production. A slow home day gives the boys rhythm, safety, and connection without adding more transition load.");
+      } else if (activity.area === "Lincoln" && calendarInLincoln()) {
+        pieces.push(`This works because you are already pointed toward Lincoln, so the drive cost is partly paid. ${activity.name} adds meaning without creating a whole separate travel day.`);
+      } else if (activity.area === "Lincoln") {
+        pieces.push(`This is a Lincoln option, so it only makes sense if you truly have the energy and a clear window. Today it rises to the top because your settings said Lincoln is allowed.`);
+      } else if (activity.type === "core") {
+        pieces.push("This is a bigger, more planned memory day, not an everyday suggestion. It works best because Dad is available and the budget/energy settings allow a bigger outing.");
+      } else {
+        pieces.push(`This works today because it gives the boys something real to do without asking you to over-explain the day. ${activity.name} fits the current energy, weather, and budget better than a big outing.`);
+      }
+
+      if (form.dad === "Solo day") {
+        pieces.push("Since this is a solo mom day, the suggestion stays realistic: clear endpoint, manageable prep, and no unnecessary extra stops.");
+      } else if (form.dad === "Dad home all day") {
+        pieces.push("With Dad available, the app can allow a little more adventure and backup support.");
+      } else {
+        pieces.push("Because Dad is home later, this keeps the daytime manageable and leaves room for family reset after 5:30.");
+      }
+
+      if (showSoon()) {
+        pieces.push("Because show timing matters, this protects connection and bandwidth instead of adding a high-recovery adventure.");
+      }
+
+      return pieces.slice(0, 3).join(" ");
+    }
+
+    function getDadNote(activity) {
+      if (form.dad === "Solo day") {
+        if (activity.dad === "no") return "Dad note: This is built to be manageable without Dad — contained, simple, and not overly ambitious.";
+        return "Dad note: This is not ideal without Dad, so keep it short and only do it if your energy is higher than the form says.";
+      }
+      if (form.dad === "Dad home by 5:30") return "Dad note: This keeps the day reasonable before Dad gets home, with room for an evening reset.";
+      return "Dad note: Dad being home makes this more flexible and gives you a second set of hands.";
+    }
+
+    function getTravelNote(activity) {
+      if (activity.area === "Home") return "Travel note: No drive today. That is a valid strategy, not a consolation prize.";
+      if (activity.area === "Local") return "Travel note: Local enough to stay flexible and bail if the day turns sideways.";
+      if (activity.area === "Lincoln" && calendarInLincoln()) return "Travel note: Lincoln is easier today because your calendar already points that direction.";
+      if (activity.area === "Lincoln") return "Travel note: Lincoln is about a 2-hour round trip, so keep the outing worth the drive and do not over-stack.";
+      if (activity.area === "Ashland") return "Travel note: Ashland is a plan-ahead outing. Treat it like a bigger family day.";
+      if (activity.area === "Omaha") return "Travel note: Omaha is a full Core Memory Day, not a casual add-on.";
+      return "Travel note: Keep the drive proportionate to the payoff.";
+    }
+
+    function getAffirm(activity) {
+      if (activity.area === "Home") return "Home days count; ordinary childhood is still childhood.";
+      if (showSoon()) return "Making the time before a show feel connected is not extra — it is part of the work.";
+      if (activity.type === "core") return "A bigger memory day is allowed when the support, budget, and timing actually fit.";
+      if (calendarInLincoln()) return "You are not doing more just to do more; you are making the drive you already have matter.";
+      if (isLowEnergy()) return "Choosing the realistic option is not lowering the bar; it is protecting the whole family rhythm.";
+      return "This is enough structure to help the day, without turning motherhood into a performance.";
+    }
+
+    function generateResult() {
+      const scored = selectBestActivities();
+      const primary = scored[0];
+      const backups = scored.slice(1, 3);
+      const invite = getInviteFor(primary);
+      const whyItWorks = getWhyItWorks(primary, primary.why);
+
+      currentResult = {
+        primary,
+        backups,
+        invite,
+        whyItWorks,
+        affirm: getAffirm(primary),
+        dadNote: getDadNote(primary),
+        travelNote: getTravelNote(primary),
+        contextSummary: `Today’s reality: ${form.dayType} • ${form.dad} • ${form.energy} • ${form.weather}, ${form.temp} • ${form.budget} • ${form.location} • ${form.kids}.`,
+        whyTags: primary.why
+      };
+
+      renderResult();
+      document.getElementById("formScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setRecoveryBadge(level) {
+      const badge = document.getElementById("recoveryBadge");
+      badge.className = `badge ${level}`;
+      badge.innerHTML = `<span class="dot"></span><span>${capitalize(level)} recovery</span>`;
+    }
+
+    function capitalize(s) {
+      return (s || "").charAt(0).toUpperCase() + (s || "").slice(1);
+    }
+
+    function renderResult() {
+      const r = currentResult;
+      const a = r.primary;
+
+      document.getElementById("affirmText").textContent = r.affirm;
+      document.getElementById("primaryEmoji").textContent = a.emoji;
+      document.getElementById("primaryName").textContent = a.name;
+      document.getElementById("whyItWorks").textContent = r.whyItWorks;
+      setRecoveryBadge(a.recovery);
+      document.getElementById("budgetBadge").textContent = "💰 " + a.budget;
+      document.getElementById("dadNote").textContent = r.dadNote;
+      document.getElementById("travelNote").textContent = r.travelNote;
+      document.getElementById("contextSummary").textContent = r.contextSummary;
+
+      renderTags("whyTags", r.whyTags);
+      renderTags("prepList", a.prep);
+
+      document.getElementById("mealPlan").innerHTML = [
+        ["Before", a.meals.before],
+        ["Out / during", a.meals.during],
+        ["After", a.meals.after]
+      ].map(([label, text]) => `
+        <div class="meal-row">
+          <span class="meal-label">${escapeHtml(label)}</span>
+          <p class="body">${escapeHtml(text)}</p>
+        </div>
+      `).join("");
+
+      document.getElementById("homeschoolTieIn").textContent = a.homeschool;
+      document.getElementById("nostalgiaFactor").textContent = a.nostalgia;
+      document.getElementById("mediaTitle").textContent = a.media.title;
+      document.getElementById("mediaPlatform").textContent = `${a.media.platform} — ${a.media.type}`;
+      document.getElementById("mediaNote").textContent = a.media.note;
+
+      if (r.invite.who && r.invite.text) {
+        document.getElementById("inviteBlock").classList.remove("hidden");
+        document.getElementById("inviteWho").textContent = r.invite.who;
+        document.getElementById("inviteText").textContent = r.invite.text;
+      } else {
+        document.getElementById("inviteBlock").classList.add("hidden");
+      }
+
+      document.getElementById("recoveryPlan").innerHTML = a.recoveryPlan.map(item => `
+        <div class="line-row">
+          <span style="color:var(--sage);font-weight:900;">→</span>
+          <p class="body">${escapeHtml(item)}</p>
+        </div>
+      `).join("");
+
+      document.getElementById("backups").innerHTML = r.backups.map(b => `
+        <div class="mini-card">
+          <div class="row" style="justify-content:space-between;margin-bottom:8px;">
+            <div class="row" style="gap:8px;">
+              <span style="font-size:24px;">${escapeHtml(b.emoji)}</span>
+              <h3>${escapeHtml(b.name)}</h3>
+            </div>
+            <span class="badge ${escapeHtml(b.recovery)}"><span class="dot"></span><span>${capitalize(escapeHtml(b.recovery))}</span></span>
+          </div>
+          <p class="body">${escapeHtml(getBackupWhy(b))}</p>
+        </div>
+      `).join("");
+    }
+
+    function getBackupWhy(a) {
+      if (a.area === "Home") return "A lower-demand option if everyone needs fewer transitions.";
+      if (a.area === "Lincoln" && calendarInLincoln()) return "A useful Lincoln add-on because you may already be nearby.";
+      if (a.type === "indoor") return "A solid backup if weather or kid energy makes outside play less realistic.";
+      return "Still fits enough of today’s reality to be worth keeping in your pocket.";
+    }
+
+    function renderTags(id, items) {
+      document.getElementById(id).innerHTML = (items || []).map(item => `<span class="tag">${escapeHtml(item)}</span>`).join("");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "").replace(/[&<>"']/g, m => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m]));
+    }
+
+    function copyInvite() {
+      const txt = currentResult?.invite?.text;
+      if (!txt) return;
+      navigator.clipboard.writeText(txt).then(() => {
+        document.getElementById("copyStatus").textContent = "Copied!";
+        setTimeout(() => document.getElementById("copyStatus").textContent = "", 2000);
+      });
+    }
+
+    function saveMemory() {
+      if (!currentResult) return;
+      const note = document.getElementById("memoryNote").value.trim();
+      const memories = JSON.parse(localStorage.getItem(STORAGE.memories) || "[]");
+      memories.unshift({
+        date: new Date().toLocaleDateString(),
+        activity: currentResult.primary.name,
+        note: note || "No note added.",
+        recovery: currentResult.primary.recovery
+      });
+      localStorage.setItem(STORAGE.memories, JSON.stringify(memories.slice(0, 100)));
+      document.getElementById("memoryNote").value = "";
+      alert("Memory saved.");
+      renderMemories();
+    }
+
+    function startNewDay() {
+      document.getElementById("resultScreen").classList.add("hidden");
+      document.getElementById("formScreen").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
+      document.getElementById("todayTab").classList.toggle("hidden", tab !== "today");
+      document.getElementById("settingsTab").classList.toggle("hidden", tab !== "settings");
+      document.getElementById("memoriesTab").classList.toggle("hidden", tab !== "memories");
+      if (tab === "settings") loadSettingsFields();
+      if (tab === "memories") renderMemories();
+    }
+
+    function loadSettingsFields() {
+      document.getElementById("peopleSettings").value = localStorage.getItem(STORAGE.people) || DEFAULT_PEOPLE.map(p => `${p.name} | ${p.area} | ${p.type}`).join("\n");
+      document.getElementById("passesSettings").value = localStorage.getItem(STORAGE.passes) || DEFAULT_PASSES.join("\n");
+      document.getElementById("streamingSettings").value = localStorage.getItem(STORAGE.streaming) || DEFAULT_STREAMING.join("\n");
+    }
+
+    function saveSettings() {
+      localStorage.setItem(STORAGE.people, document.getElementById("peopleSettings").value.trim());
+      localStorage.setItem(STORAGE.passes, document.getElementById("passesSettings").value.trim());
+      localStorage.setItem(STORAGE.streaming, document.getElementById("streamingSettings").value.trim());
+      document.getElementById("settingsSaved").textContent = "Saved.";
+      setTimeout(() => document.getElementById("settingsSaved").textContent = "", 2000);
+    }
+
+    function renderMemories() {
+      const list = document.getElementById("memoriesList");
+      const memories = JSON.parse(localStorage.getItem(STORAGE.memories) || "[]");
+      if (!memories.length) {
+        list.innerHTML = `<p class="body">No memories saved yet. After a day suggestion, write one sentence and save it here.</p>`;
+        return;
+      }
+      list.innerHTML = memories.map(m => `
+        <div class="saved-item">
+          <div class="saved-top">
+            <div>
+              <p class="tiny" style="margin-bottom:4px;">${escapeHtml(m.date)} • ${escapeHtml(m.recovery)} recovery</p>
+              <h3>${escapeHtml(m.activity)}</h3>
+            </div>
+          </div>
+          <p class="body" style="margin-top:8px;">${escapeHtml(m.note)}</p>
+        </div>
+      `).join("");
+    }
+
+    function clearMemories() {
+      if (!confirm("Clear all saved memories?")) return;
+      localStorage.setItem(STORAGE.memories, JSON.stringify([]));
+      renderMemories();
+    }
+
+    function init() {
+      saveDefaultsIfNeeded();
+
+      document.querySelectorAll(".pills .pill").forEach(btn => {
+        btn.addEventListener("click", () => selectPill(btn));
+      });
+
+      document.querySelectorAll(".tab").forEach(tab => {
+        tab.addEventListener("click", () => switchTab(tab.dataset.tab));
+      });
+
+      document.getElementById("generateBtn").addEventListener("click", generateResult);
+      document.getElementById("copyInviteBtn").addEventListener("click", copyInvite);
+      document.getElementById("saveMemoryBtn").addEventListener("click", saveMemory);
+      document.getElementById("newDayBtn").addEventListener("click", startNewDay);
+      document.getElementById("printBtn").addEventListener("click", () => window.print());
+      document.getElementById("saveSettingsBtn").addEventListener("click", saveSettings);
+      document.getElementById("clearMemoriesBtn").addEventListener("click", clearMemories);
+
+      loadSettingsFields();
+      renderMemories();
+    }
+
+    init();
+  </script>
+</body>
+</html>
