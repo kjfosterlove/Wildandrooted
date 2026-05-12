@@ -206,6 +206,20 @@
       border-radius: 10px;
     }
 
+    .btn:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+      opacity: .8;
+    }
+
+    .backup-click {
+      cursor: pointer;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+
+    .backup-click:active { transform: scale(.99); }
+    .backup-click:hover { border-color: var(--green); }
+
     .row {
       display: flex;
       gap: 8px;
@@ -439,7 +453,7 @@
         <div class="question">
           <p class="section-label">What kind of day?</p>
           <div class="pills" data-field="dayType">
-            <button class="pill active">Weekday</button>
+            <button class="pill">Weekday</button>
             <button class="pill">Weekend</button>
             <button class="pill">PTO Day</button>
             <button class="pill">Show Day</button>
@@ -451,7 +465,7 @@
         <div class="question">
           <p class="section-label">Is dad around?</p>
           <div class="pills" data-field="dad">
-            <button class="pill active">Solo day</button>
+            <button class="pill">Solo day</button>
             <button class="pill">Dad home by 5:30</button>
             <button class="pill">Dad home all day</button>
           </div>
@@ -460,7 +474,7 @@
         <div class="question">
           <p class="section-label">Weather</p>
           <div class="pills" data-field="weather">
-            <button class="pill active">Sunny</button>
+            <button class="pill">Sunny</button>
             <button class="pill">Cloudy</button>
             <button class="pill">Rainy</button>
             <button class="pill">Stormy</button>
@@ -471,7 +485,7 @@
           <p class="section-label">Temperature</p>
           <div class="pills" data-field="temp">
             <button class="pill">Cool under 65</button>
-            <button class="pill active">Nice 65-80</button>
+            <button class="pill">Nice 65-80</button>
             <button class="pill">Hot 80+</button>
           </div>
         </div>
@@ -480,7 +494,7 @@
           <p class="section-label">Mom's energy</p>
           <div class="pills" data-field="energy">
             <button class="pill">Full tank</button>
-            <button class="pill active">Half tank</button>
+            <button class="pill">Half tank</button>
             <button class="pill">Running on fumes</button>
           </div>
         </div>
@@ -488,7 +502,7 @@
         <div class="question">
           <p class="section-label">Budget mode</p>
           <div class="pills" data-field="budget">
-            <button class="pill active">Free day</button>
+            <button class="pill">Free day</button>
             <button class="pill">Low spend $5-15</button>
             <button class="pill">Normal budget</button>
             <button class="pill">Bigger outing okay</button>
@@ -499,7 +513,7 @@
           <p class="section-label">How far will you go?</p>
           <div class="pills" data-field="location">
             <button class="pill">Home only</button>
-            <button class="pill active">Local area</button>
+            <button class="pill">Local area</button>
             <button class="pill">Lincoln if worth it</button>
             <button class="pill">Lincoln for sure</button>
             <button class="pill">Anywhere</button>
@@ -509,7 +523,7 @@
         <div class="question">
           <p class="section-label">How are the kids?</p>
           <div class="pills" data-field="kids">
-            <button class="pill active">All good</button>
+            <button class="pill">All good</button>
             <button class="pill">Someone is off</button>
             <button class="pill">Everyone is melting</button>
             <button class="pill">Pure chaos</button>
@@ -519,7 +533,7 @@
         <div class="question">
           <p class="section-label">Yesterday / last outing recovery</p>
           <div class="pills" data-field="yesterday">
-            <button class="pill active">Normal</button>
+            <button class="pill">Normal</button>
             <button class="pill">High recovery yesterday</button>
             <button class="pill">Need a reset day</button>
           </div>
@@ -535,7 +549,7 @@
           <textarea id="extraNotes" class="textarea" placeholder="Optional: bad sleep, need groceries, boys need movement, don't want to cook, etc."></textarea>
         </div>
 
-        <button class="btn" id="generateBtn">Give me my day</button>
+        <button class="btn" id="generateBtn" disabled>Choose the basics first</button>
       </section>
 
       <section id="resultScreen" class="hidden">
@@ -625,6 +639,7 @@
           <textarea id="memoryNote" class="textarea" placeholder="Later: What did they love? What was funny? Was it worth the energy?"></textarea>
           <div class="row" style="margin-top:10px;">
             <button class="btn secondary small" id="saveMemoryBtn">Save memory</button>
+            <button class="btn secondary small" id="respinBtn">Respin</button>
             <button class="btn muted small" id="printBtn">Print day</button>
             <button class="btn muted small" id="newDayBtn">Start new day</button>
           </div>
@@ -915,6 +930,196 @@
         recoveryPlan: ["Plan a slow day after.", "Save photos and one memory sentence while the day is still fresh."]
       },
       {
+        id: "blanket-fort",
+        name: "Blanket Fort + Audiobook",
+        emoji: "⛺",
+        area: "Home",
+        type: "home",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy", "Stormy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["blankets", "pillows", "water bottles", "snack bowl", "audiobook"],
+        reasons: ["90s childhood", "lowest recovery", "rain-friendly", "imaginative play", "easy reset"],
+        homeschool: "Let the boys build the structure, solve problems, and narrate what their fort is. This is engineering, language, and imagination without a worksheet.",
+        nostalgia: "It feels like couch cushions, dim corners, whispered plans, and the kind of indoor childhood magic that costs nothing.",
+        media: { title: "Search manually: The Boxcar Children or Frog and Toad", platform: "Libby or Spotify", type: "audiobook", note: "Perfect for fort listening without needing screens." },
+        meals: { before: "Simple breakfast first so the fort does not become snack chaos immediately.", during: "Snack bowl inside the fort if you can handle crumbs, or picnic blanket nearby.", after: "Soup, sandwiches, eggs, or whatever is easiest." },
+        recoveryPlan: ["Only use blankets you are willing to leave out for part of the day.", "Set a 10-minute fort reset before dinner, not a full-house cleanup battle."]
+      },
+      {
+        id: "muffin-morning",
+        name: "Mini Muffin Morning + Kitchen Helper Jobs",
+        emoji: "🧁",
+        area: "Home",
+        type: "home",
+        budget: "Low",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy", "Stormy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["muffin mix or ingredients", "mixing bowl", "kid-safe spoons", "wipes", "snack plates"],
+        reasons: ["life skills", "Montessori", "home rhythm", "low travel", "practical work"],
+        homeschool: "This is measuring, pouring, turn-taking, patience, and real contribution. Let each child do one clear job instead of trying to make it picture-perfect.",
+        nostalgia: "It feels like standing on chairs at the counter, sticky fingers, warm muffins, and a house that smells like somebody tried.",
+        media: { title: "Search manually: Laurie Berkner kitchen or cleanup songs", platform: "YouTube or Spotify", type: "music", note: "Use music to move from baking to cleanup." },
+        meals: { before: "This can be breakfast or snack, so do not double-cook.", during: "Add eggs, yogurt, or cheese sticks for protein.", after: "Keep lunch extremely simple because baking already used the kitchen." },
+        recoveryPlan: ["Clean only the counter and floor zone that matters.", "Let the muffins become tomorrow's snack if there are extras."]
+      },
+      {
+        id: "sidewalk-chalk",
+        name: "Sidewalk Chalk Town",
+        emoji: "🌈",
+        area: "Home",
+        type: "outdoor",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Cool under 65", "Nice 65-80"],
+        prep: ["sidewalk chalk", "water bottles", "baby-safe play spot", "snack"],
+        reasons: ["low prep", "imaginative play", "90s childhood", "outside", "easy cleanup"],
+        homeschool: "Draw roads, houses, stores, or a tiny town. This builds storytelling, spatial awareness, early map skills, and cooperative play.",
+        nostalgia: "It feels like chalk-dust knees, pretend roads, and a driveway becoming a whole world.",
+        media: { title: "Search manually: Mister Rogers neighborhood episode", platform: "Amazon Prime or YouTube", type: "show", note: "Fits the neighborhood/community theme if you want a calm follow-up." },
+        meals: { before: "Breakfast first.", during: "Snack outside if the weather is nice.", after: "Easy lunch; this is not a kitchen-heavy day." },
+        recoveryPlan: ["Leave the chalk out if they are still using it.", "Hose off hands and feet before coming in."]
+      },
+      {
+        id: "nature-table",
+        name: "Nature Basket Hunt",
+        emoji: "🍃",
+        area: "Home",
+        type: "outdoor",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Cool under 65", "Nice 65-80"],
+        prep: ["basket", "water bottles", "snack", "blanket or tray"],
+        reasons: ["Charlotte Mason", "free", "nature study", "low recovery", "works at home"],
+        homeschool: "Send them to find three safe nature treasures: something green, something rough, something tiny. Bring them back to a tray and let each child tell what they found.",
+        nostalgia: "It feels like wandering the yard with a basket, noticing tiny things, and making the ordinary feel special.",
+        media: { title: "Search manually: Julie's Library nature episode", platform: "Spotify", type: "podcast", note: "Gentle follow-up for quiet time." },
+        meals: { before: "Eat before going out.", during: "Water bottles and a small snack.", after: "Lunch can be picnic-style to keep the nature mood going." },
+        recoveryPlan: ["Nature treasures stay in one basket.", "Throw away anything buggy before it enters the house."]
+      },
+      {
+        id: "tape-roads",
+        name: "Masking Tape Roads + Cars",
+        emoji: "🚙",
+        area: "Home",
+        type: "indoor",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy", "Stormy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["masking tape", "toy cars", "blocks", "snack"],
+        reasons: ["independent play", "rain-friendly", "easy setup", "works with toddler", "low recovery"],
+        homeschool: "Build roads, bridges, homes, and parking lots. This is spatial planning, pretend play, vocabulary, and early engineering.",
+        nostalgia: "It feels like toy cars on the living room floor and being allowed to turn the house into a town.",
+        media: { title: "Search manually: Little Bear or Franklin", platform: "Paramount+ or YouTube", type: "show", note: "Gentle backup if the day needs a quiet ending." },
+        meals: { before: "Normal breakfast.", during: "Snack nearby, not on the roads.", after: "Use a no-cook lunch or leftovers." },
+        recoveryPlan: ["Pull tape before bedtime if it will bug you tomorrow.", "Take one picture if they build something sweet."]
+      },
+      {
+        id: "animal-wash",
+        name: "Animal Washing Station",
+        emoji: "🧼",
+        area: "Home",
+        type: "sensory",
+        budget: "Free",
+        recovery: "medium",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["plastic animals", "towel", "small bin", "soapy water", "dry clothes if toddler joins"],
+        reasons: ["sensory", "Montessori", "independent start", "practical life", "works at home"],
+        homeschool: "Washing, drying, sorting, and naming animals gives practical life, vocabulary, and classification practice.",
+        nostalgia: "It feels like a little plastic zoo getting a bath on the kitchen floor.",
+        media: { title: "Search manually: Wild Kratts short animal clip", platform: "YouTube", type: "youtube", note: "Only if you want a themed follow-up; the activity itself is enough." },
+        meals: { before: "Snack first.", during: "Keep food away from the water bin.", after: "Simple lunch after cleanup." },
+        recoveryPlan: ["Put a towel under the bin before starting.", "Stop while it is still fun, not when the whole floor is soaked."]
+      },
+      {
+        id: "grocery-field-trip",
+        name: "Grocery Store Field Trip",
+        emoji: "🛒",
+        area: "Local",
+        type: "outing",
+        budget: "Variable",
+        recovery: "medium",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy", "Stormy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["short list", "water bottles", "diapers", "wipes", "snack", "one kid job"],
+        reasons: ["life skills", "errand stack", "real world learning", "practical", "budget aware"],
+        homeschool: "Give each child one job: find bananas, count apples, carry bread, or choose a vegetable. Real errands are real education.",
+        nostalgia: "It feels like riding in the cart, picking the cereal aisle slowly, and learning how family life works.",
+        media: { title: "Search manually: grocery store songs for kids", platform: "YouTube", type: "music", note: "Optional before you go if they need buy-in." },
+        meals: { before: "Eat before shopping to avoid impulse snack chaos.", during: "Only one planned treat if budget allows.", after: "Use something you bought for lunch immediately." },
+        recoveryPlan: ["Keep the list short.", "Do not combine this with another hard outing if kids are already off."]
+      },
+      {
+        id: "park-snack",
+        name: "Park + Snack Blanket",
+        emoji: "🛝",
+        area: "Local",
+        type: "outdoor",
+        budget: "Free",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy"],
+        temp: ["Cool under 65", "Nice 65-80"],
+        prep: ["water bottles", "snacks", "diapers", "wipes", "blanket", "sunscreen if needed"],
+        reasons: ["free", "movement", "easy exit", "local", "classic childhood"],
+        homeschool: "Let them climb, balance, negotiate turns, and notice their bodies. Movement is learning at these ages.",
+        nostalgia: "It feels like goldfish crackers on a blanket and kids running back with sweaty hair.",
+        media: { title: "Search manually: Raffi or Laurie Berkner", platform: "Spotify", type: "music", note: "Good for the ride there or cleanup at home." },
+        meals: { before: "Quick protein before leaving.", during: "Snack blanket at the park.", after: "Lunch at home so the outing stays free." },
+        recoveryPlan: ["Leave before everyone is completely done.", "Shoes off at the door."]
+      },
+      {
+        id: "grandparents-visit",
+        name: "Grandma/Grandpa Visit Add-On",
+        emoji: "👵",
+        area: "Lincoln",
+        type: "family",
+        budget: "Free",
+        recovery: "medium",
+        dad: "sometimes",
+        weather: ["Sunny", "Cloudy", "Rainy", "Stormy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["water bottles", "diapers", "wipes", "snacks", "anything to return/drop off"],
+        reasons: ["relationship", "Lincoln stack", "family connection", "low cost", "meaningful"],
+        homeschool: "Family visits teach belonging, manners, conversation, and memory. Have each boy tell one thing from the week.",
+        nostalgia: "It feels like showing up at grandparents' house, being known, and making ordinary family connection part of childhood.",
+        media: { title: "Search manually: Adventures in Odyssey", platform: "Spotify or YouTube", type: "podcast", note: "Good for the Lincoln drive." },
+        meals: { before: "Eat before unless food is planned.", during: "Pack snacks so you do not arrive needy.", after: "Easy dinner after family time." },
+        recoveryPlan: ["Keep the visit length realistic.", "Use the drive home as quiet audio time."]
+      },
+      {
+        id: "runza-treat",
+        name: "Runza Ice Cream Coupon Run",
+        emoji: "🍦",
+        area: "Local",
+        type: "treat",
+        budget: "Low",
+        recovery: "low",
+        dad: "no",
+        weather: ["Sunny", "Cloudy", "Rainy"],
+        temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+        prep: ["coupons", "water bottles", "wipes"],
+        reasons: ["coupon friendly", "quick win", "90s childhood", "low prep", "easy exit"],
+        homeschool: "Let Ace hand over the coupon or count how many treats you need. Tiny real-world transactions count.",
+        nostalgia: "It feels like a simple summer treat run, the kind that somehow becomes a memory because nobody rushed it.",
+        media: { title: "Search manually: short car songs playlist", platform: "Spotify", type: "music", note: "Just enough to make the drive feel fun." },
+        meals: { before: "Eat real food first so ice cream is the treat, not the meal.", during: "Ice cream coupon stop.", after: "Simple dinner; no guilt." },
+        recoveryPlan: ["Wipes ready before handing treats back.", "Keep it as the only outing if the day is fragile."]
+      },
+      {
         id: "slow-home",
         name: "Slow Home Day",
         emoji: "🏡",
@@ -935,19 +1140,21 @@
       }
     ];
 
-    let form = {
-      dayType: "Weekday",
-      dad: "Solo day",
-      weather: "Sunny",
-      temp: "Nice 65-80",
-      energy: "Half tank",
-      budget: "Free day",
-      location: "Local area",
-      kids: "All good",
-      yesterday: "Normal"
+    const EMPTY_FORM = {
+      dayType: "",
+      dad: "",
+      weather: "",
+      temp: "",
+      energy: "",
+      budget: "",
+      location: "",
+      kids: "",
+      yesterday: ""
     };
 
+    let form = { ...EMPTY_FORM };
     let currentResult = null;
+    let lastPrimaryIds = [];
 
     function getPeople() {
       const raw = localStorage.getItem(STORAGE.people);
@@ -989,6 +1196,23 @@
       group.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
       button.classList.add("active");
       form[field] = button.textContent.trim();
+      updateGenerateButton();
+    }
+
+    function formComplete() {
+      return Object.values(form).every(v => v && v.trim() !== "");
+    }
+
+    function updateGenerateButton() {
+      const btn = document.getElementById("generateBtn");
+      if (!btn) return;
+      if (formComplete()) {
+        btn.disabled = false;
+        btn.textContent = "Give me my day";
+      } else {
+        btn.disabled = true;
+        btn.textContent = "Choose the basics first";
+      }
     }
 
     function hasCalendarWord(words) {
@@ -1030,9 +1254,13 @@
       return true;
     }
 
-    function scoreActivity(a) {
+    function scoreActivity(a, avoidRecent = false) {
       let score = 0;
       const why = [];
+
+      if (avoidRecent && lastPrimaryIds.includes(a.id)) {
+        score -= 18;
+      }
 
       if (!areaAllowed(a)) return { score: -999, why: [] };
 
@@ -1119,8 +1347,8 @@
       return { score, why: [...new Set(why.concat(a.reasons.slice(0, 3)))] };
     }
 
-    function selectBestActivities() {
-      const scored = activities.map(a => ({ ...a, ...scoreActivity(a) }))
+    function selectBestActivities(avoidRecent = false) {
+      const scored = activities.map(a => ({ ...a, ...scoreActivity(a, avoidRecent) }))
         .filter(a => a.score > -100)
         .sort((a, b) => b.score - a.score);
 
@@ -1215,12 +1443,19 @@
       return "This is enough structure to help the day, without turning motherhood into a performance.";
     }
 
-    function generateResult() {
-      const scored = selectBestActivities();
+    function generateResult(avoidRecent = false) {
+      if (!formComplete()) {
+        updateGenerateButton();
+        return;
+      }
+      const scored = selectBestActivities(avoidRecent);
       const primary = scored[0];
       const backups = scored.slice(1, 3);
       const invite = getInviteFor(primary);
       const whyItWorks = getWhyItWorks(primary, primary.why);
+
+      lastPrimaryIds.unshift(primary.id);
+      lastPrimaryIds = lastPrimaryIds.slice(0, 4);
 
       currentResult = {
         primary,
@@ -1299,8 +1534,8 @@
         </div>
       `).join("");
 
-      document.getElementById("backups").innerHTML = r.backups.map(b => `
-        <div class="mini-card">
+      document.getElementById("backups").innerHTML = r.backups.map((b, index) => `
+        <div class="mini-card backup-click" data-backup-index="${index}">
           <div class="row" style="justify-content:space-between;margin-bottom:8px;">
             <div class="row" style="gap:8px;">
               <span style="font-size:24px;">${escapeHtml(b.emoji)}</span>
@@ -1311,6 +1546,37 @@
           <p class="body">${escapeHtml(getBackupWhy(b))}</p>
         </div>
       `).join("");
+
+      document.querySelectorAll(".backup-click").forEach(card => {
+        card.addEventListener("click", () => openBackup(Number(card.dataset.backupIndex)));
+      });
+    }
+
+    function openBackup(index) {
+      if (!currentResult || !currentResult.backups[index]) return;
+      const selected = currentResult.backups[index];
+      const remaining = activities
+        .map(a => ({ ...a, ...scoreActivity(a, true) }))
+        .filter(a => a.score > -100 && a.id !== selected.id)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 2);
+
+      const invite = getInviteFor(selected);
+
+      currentResult = {
+        primary: selected,
+        backups: remaining,
+        invite,
+        whyItWorks: getWhyItWorks(selected, selected.why || selected.reasons || []),
+        affirm: getAffirm(selected),
+        dadNote: getDadNote(selected),
+        travelNote: getTravelNote(selected),
+        contextSummary: `Today’s reality: ${form.dayType} • ${form.dad} • ${form.energy} • ${form.weather}, ${form.temp} • ${form.budget} • ${form.location} • ${form.kids}.`,
+        whyTags: selected.why || selected.reasons || []
+      };
+
+      renderResult();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function getBackupWhy(a) {
@@ -1360,6 +1626,11 @@
     }
 
     function startNewDay() {
+      form = { ...EMPTY_FORM };
+      document.querySelectorAll(".pills .pill").forEach(p => p.classList.remove("active"));
+      document.getElementById("calendarText").value = "";
+      document.getElementById("extraNotes").value = "";
+      updateGenerateButton();
       document.getElementById("resultScreen").classList.add("hidden");
       document.getElementById("formScreen").classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1428,6 +1699,7 @@
       document.getElementById("generateBtn").addEventListener("click", generateResult);
       document.getElementById("copyInviteBtn").addEventListener("click", copyInvite);
       document.getElementById("saveMemoryBtn").addEventListener("click", saveMemory);
+      document.getElementById("respinBtn").addEventListener("click", () => generateResult(true));
       document.getElementById("newDayBtn").addEventListener("click", startNewDay);
       document.getElementById("printBtn").addEventListener("click", () => window.print());
       document.getElementById("saveSettingsBtn").addEventListener("click", saveSettings);
@@ -1435,6 +1707,7 @@
 
       loadSettingsFields();
       renderMemories();
+      updateGenerateButton();
     }
 
     init();
