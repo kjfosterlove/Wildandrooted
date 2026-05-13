@@ -5,136 +5,174 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wild + Rooted</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Nunito:wght@400;600;700;800&display=swap');
+
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Nunito:wght@400;600;700;800;900&display=swap');
 
     :root {
-      --cream: #F5EDD8;
-      --paper: #FBF7F0;
-      --green: #2D4A32;
-      --green-dark: #234038;
-      --sage: #8BA888;
-      --brown: #5C3D1E;
-      --ink: #2C2416;
-      --tan: #EDE5D8;
-      --border: #D9CEBC;
-      --muted: #C4B99F;
-      --red-bg: #FBE9E7;
-      --red: #BF360C;
-      --yellow-bg: #FFF8E1;
-      --yellow: #E65100;
-      --low-bg: #E8F5E9;
-      --low: #2E7D32;
+      --bg: #071107;
+      --panel: #101d0f;
+      --card: rgba(18, 30, 15, .94);
+      --cream: #F6E8C8;
+      --cream-2: #E9D4A7;
+      --gold: #D8B56D;
+      --gold-2: #F3D89C;
+      --sage: #99AA79;
+      --brown: #3A2615;
+      --ink: #FFF5DC;
+      --muted: #B9AD8B;
+      --border: rgba(216, 181, 109, .35);
+      --soft-border: rgba(246, 232, 200, .18);
+      --green: #2F5125;
+      --green-2: #476C35;
+      --danger-bg: #422119;
+      --danger: #F2A08B;
+      --low-bg: rgba(72, 119, 59, .35);
+      --low: #B8E0A9;
+      --med-bg: rgba(216, 181, 109, .25);
+      --med: #F3D89C;
+      --high-bg: rgba(143, 75, 49, .38);
+      --high: #FFB492;
+      --shadow: 0 16px 42px rgba(0,0,0,.28);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: var(--cream);
-      color: var(--brown);
+      min-height: 100vh;
+      color: var(--ink);
       font-family: Nunito, sans-serif;
+      background:
+        radial-gradient(circle at 12% 4%, rgba(216,181,109,.12), transparent 30%),
+        radial-gradient(circle at 88% 22%, rgba(111,131,86,.16), transparent 30%),
+        linear-gradient(180deg, #061006 0%, #0C1709 42%, #081107 100%);
     }
 
-    button, input, textarea, select {
-      font-family: Nunito, sans-serif;
-    }
+    button, input, textarea, select { font-family: Nunito, sans-serif; }
 
     .app {
       min-height: 100vh;
-      padding-bottom: 32px;
-      max-width: 720px;
+      padding-bottom: 34px;
+      max-width: 860px;
       margin: 0 auto;
-      background: var(--cream);
+      position: relative;
+      overflow-x: hidden;
     }
 
+    .app::before, .app::after {
+      content: "✦  ✧  ✦";
+      position: fixed;
+      color: rgba(216,181,109,.08);
+      font-size: 90px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .app::before { left: -10px; top: 110px; transform: rotate(-18deg); }
+    .app::after { right: -20px; bottom: 120px; transform: rotate(17deg); }
+
     .header {
-      background: var(--green);
-      padding: 24px 18px 18px;
+      background: transparent;
+      padding: 32px 18px 20px;
       text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+      position: relative;
+      top: auto;
+      z-index: 1;
+      box-shadow: none;
     }
 
     .logo {
-      font-family: "Playfair Display", serif;
+      font-family: "Cormorant Garamond", serif;
       color: var(--cream);
-      font-size: 30px;
-      line-height: 1;
+      font-size: 46px;
+      line-height: .95;
       font-weight: 700;
       margin: 0;
+      letter-spacing: .01em;
     }
 
     .tagline {
-      color: var(--sage);
-      font-size: 12px;
-      letter-spacing: .08em;
+      color: var(--gold);
+      font-size: 13px;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      margin: 7px 0 0;
-      font-weight: 800;
+      margin: 10px 0 0;
+      font-weight: 900;
     }
 
     .tabs {
       display: flex;
-      background: var(--green-dark);
-      padding: 8px;
-      gap: 8px;
+      gap: 6px;
+      padding: 8px 10px 12px;
+      overflow-x: auto;
       position: sticky;
-      top: 77px;
-      z-index: 9;
+      top: 0;
+      z-index: 20;
+      background: rgba(7,17,7,.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(216,181,109,.18);
     }
 
     .tab {
-      flex: 1;
-      border: 1.5px solid rgba(245,237,216,.25);
-      color: var(--cream);
-      background: transparent;
-      border-radius: 999px;
-      padding: 9px 8px;
-      font-weight: 800;
+      flex: 1 0 auto;
+      border: 1.5px solid var(--border);
+      color: var(--cream-2);
+      background: rgba(246,232,200,.04);
+      border-radius: 16px;
+      padding: 13px 12px;
+      font-weight: 900;
       font-size: 12px;
       cursor: pointer;
-      opacity: .75;
+      opacity: .85;
+      white-space: nowrap;
+      letter-spacing: .05em;
+      text-transform: uppercase;
     }
 
     .tab.active {
-      background: var(--cream);
-      color: var(--green);
+      background: linear-gradient(180deg, var(--cream) 0%, #EBD6AA 100%);
+      color: #1A2B12;
       opacity: 1;
+      border-color: rgba(246,232,200,.55);
     }
 
     .card {
-      background: var(--paper);
-      border-radius: 18px;
-      padding: 20px;
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
       margin: 14px;
-      box-shadow: 0 2px 12px rgba(44,36,22,.07);
+      box-shadow: var(--shadow);
     }
 
     .card.primary {
-      border: 2px solid var(--green);
+      border: 2px solid rgba(216,181,109,.55);
+      background: linear-gradient(180deg, rgba(18,30,15,.98), rgba(16,25,12,.96));
     }
 
     .mini-card {
-      background: var(--paper);
-      border: 1.5px solid var(--tan);
+      background: rgba(246,232,200,.055);
+      border: 1.5px solid var(--soft-border);
       border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 10px rgba(44,36,22,.05);
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 22px rgba(0,0,0,.16);
     }
+
+    .backup-click, .bucket-item { cursor: pointer; }
+    .backup-click:active { transform: scale(.99); }
 
     .section-label {
       margin: 0 0 10px;
       font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .08em;
+      font-weight: 900;
+      letter-spacing: .13em;
       text-transform: uppercase;
-      color: var(--sage);
+      color: var(--gold);
     }
 
-    .question { margin-bottom: 22px; }
+    .question { margin-bottom: 20px; }
 
     .pills {
       display: flex;
@@ -143,87 +181,94 @@
     }
 
     .pill {
-      padding: 10px 15px;
+      padding: 10px 14px;
       border-radius: 999px;
-      border: 2px solid var(--border);
-      background: var(--paper);
-      color: var(--brown);
-      font-size: 14px;
-      font-weight: 700;
+      border: 1.5px solid rgba(246,232,200,.25);
+      background: rgba(246,232,200,.055);
+      color: var(--cream);
+      font-size: 13px;
+      font-weight: 800;
       cursor: pointer;
       white-space: nowrap;
       transition: all .14s ease;
     }
 
     .pill.active {
-      border-color: var(--green);
-      background: var(--green);
-      color: var(--cream);
-      font-weight: 800;
+      border-color: var(--gold);
+      background: linear-gradient(180deg, #F4DCA9, #D4AF69);
+      color: #14230E;
+      font-weight: 900;
     }
 
-    .text-input, .textarea {
+    .text-input, .textarea, select {
       width: 100%;
-      border: 2px solid var(--border);
-      background: #fffaf2;
-      color: var(--brown);
-      border-radius: 12px;
-      padding: 12px;
+      border: 1.5px solid var(--border);
+      background: rgba(246,232,200,.06);
+      color: var(--cream);
+      border-radius: 13px;
+      padding: 13px;
       font-size: 14px;
       outline: none;
     }
 
-    .textarea { min-height: 84px; resize: vertical; }
+    .text-input::placeholder, .textarea::placeholder { color: rgba(246,232,200,.45); }
+    .textarea { min-height: 88px; resize: vertical; }
+    select option { background: #13200f; color: var(--cream); }
 
     .btn {
       width: 100%;
       border: none;
-      border-radius: 14px;
+      border-radius: 15px;
       padding: 15px;
-      background: var(--green);
+      background: linear-gradient(180deg, var(--green-2), var(--green));
       color: var(--cream);
-      font-weight: 800;
-      font-size: 16px;
+      font-weight: 900;
+      font-size: 15px;
       cursor: pointer;
+      border: 1.5px solid rgba(246,232,200,.16);
+      box-shadow: 0 8px 22px rgba(0,0,0,.22);
     }
 
     .btn.secondary {
       background: transparent;
-      color: var(--green);
-      border: 2px solid var(--green);
+      color: var(--gold-2);
+      border: 1.5px solid var(--gold);
+      box-shadow: none;
     }
 
     .btn.muted {
       background: transparent;
-      color: var(--sage);
-      border: 2px solid var(--muted);
-    }
-    .btn.danger {
-      background: var(--red-bg);
-      color: var(--red);
-      border: 2px solid var(--red-bg);
+      color: var(--muted);
+      border: 1.5px solid rgba(246,232,200,.25);
+      box-shadow: none;
     }
 
     .btn.small {
       width: auto;
-      padding: 9px 13px;
-      font-size: 13px;
-      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 12px;
+      border-radius: 11px;
+    }
+
+    .btn.danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1.5px solid rgba(242,160,139,.25);
+      box-shadow: none;
     }
 
     .btn:disabled {
-      background: var(--muted);
+      background: rgba(246,232,200,.16);
+      color: rgba(246,232,200,.45);
       cursor: not-allowed;
       opacity: .8;
+      box-shadow: none;
     }
 
-    .backup-click {
-      cursor: pointer;
-      transition: transform .12s ease, border-color .12s ease;
+    #generateBtn, #saveSettingsBtn, #downloadBackupBtn, #addCustomBtn {
+      background: linear-gradient(180deg, #F5DFAE, #D3AB62);
+      color: #14230E;
     }
-
-    .backup-click:active { transform: scale(.99); }
-    .backup-click:hover { border-color: var(--green); }
 
     .row {
       display: flex;
@@ -233,23 +278,27 @@
     }
 
     .divider {
-      border-top: 1px solid var(--tan);
+      border-top: 1px solid rgba(216,181,109,.22);
       margin: 18px 0;
     }
 
     .affirm {
-      background: var(--green-dark);
+      background: rgba(216,181,109,.11);
+      border-top: 1px solid rgba(216,181,109,.25);
+      border-bottom: 1px solid rgba(216,181,109,.25);
       padding: 14px 20px;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     .affirm p {
-      font-family: "Playfair Display", serif;
-      color: #D4C9A8;
+      font-family: "Cormorant Garamond", serif;
+      color: var(--gold-2);
       font-style: italic;
-      font-size: 15px;
+      font-size: 18px;
       margin: 0;
-      line-height: 1.4;
+      line-height: 1.25;
     }
 
     .suggestion-head {
@@ -260,39 +309,45 @@
     }
 
     .emoji {
-      font-size: 38px;
-      width: 46px;
-      text-align: center;
+      font-size: 34px;
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: rgba(216,181,109,.12);
+      border: 1px solid rgba(216,181,109,.25);
+      flex: 0 0 auto;
     }
 
     .tiny {
       margin: 0 0 3px;
       font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .1em;
+      font-weight: 900;
+      letter-spacing: .12em;
       text-transform: uppercase;
-      color: var(--sage);
+      color: var(--gold);
     }
 
     h1, h2, h3 {
-      font-family: "Playfair Display", serif;
-      color: var(--ink);
+      font-family: "Cormorant Garamond", serif;
+      color: var(--cream);
       margin: 0;
-      line-height: 1.1;
+      line-height: 1.08;
     }
 
-    h2 { font-size: 24px; }
-    h3 { font-size: 17px; }
+    h2 { font-size: 28px; }
+    h3 { font-size: 20px; }
 
     .body {
       font-size: 14px;
-      color: var(--brown);
+      color: var(--cream);
       line-height: 1.6;
       margin: 0;
     }
 
     .muted-text {
-      color: var(--sage);
+      color: var(--muted);
       font-weight: 700;
       font-size: 13px;
       line-height: 1.5;
@@ -305,8 +360,8 @@
       gap: 6px;
       border-radius: 999px;
       padding: 4px 10px;
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 12px;
+      font-weight: 900;
     }
 
     .badge .dot {
@@ -317,19 +372,20 @@
     }
 
     .badge.low { background: var(--low-bg); color: var(--low); }
-    .badge.medium { background: var(--yellow-bg); color: var(--yellow); }
-    .badge.high { background: var(--red-bg); color: var(--red); }
-    .badge.low .dot { background: #4CAF50; }
-    .badge.medium .dot { background: #FFC107; }
-    .badge.high .dot { background: #FF5722; }
+    .badge.medium { background: var(--med-bg); color: var(--med); }
+    .badge.high { background: var(--high-bg); color: var(--high); }
+    .badge.low .dot { background: #8ED081; }
+    .badge.medium .dot { background: #F3D89C; }
+    .badge.high .dot { background: #FF9B74; }
 
     .soft-badge {
-      background: #F0EBE0;
-      color: var(--brown);
+      background: rgba(246,232,200,.09);
+      color: var(--cream-2);
+      border: 1px solid rgba(246,232,200,.13);
       border-radius: 999px;
       padding: 4px 10px;
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 12px;
+      font-weight: 900;
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -342,12 +398,13 @@
     }
 
     .tag {
-      background: var(--tan);
-      border-radius: 9px;
+      background: rgba(246,232,200,.10);
+      border: 1px solid rgba(246,232,200,.10);
+      border-radius: 999px;
       padding: 6px 10px;
-      color: var(--brown);
-      font-weight: 800;
-      font-size: 13px;
+      color: var(--cream-2);
+      font-weight: 900;
+      font-size: 12px;
     }
 
     .meal-row, .line-row {
@@ -358,8 +415,8 @@
     }
 
     .meal-label {
-      min-width: 76px;
-      color: var(--sage);
+      min-width: 84px;
+      color: var(--gold);
       font-size: 11px;
       text-transform: uppercase;
       font-weight: 900;
@@ -368,15 +425,16 @@
     }
 
     .box {
-      background: var(--tan);
-      border-radius: 12px;
+      background: rgba(246,232,200,.08);
+      border: 1px solid rgba(246,232,200,.11);
+      border-radius: 13px;
       padding: 13px;
     }
 
     .copy-status {
       font-size: 12px;
-      color: var(--sage);
-      font-weight: 800;
+      color: var(--gold);
+      font-weight: 900;
       text-align: center;
       margin: 8px 0 0;
       min-height: 16px;
@@ -396,8 +454,9 @@
     }
 
     .saved-item {
-      background: var(--tan);
-      border-radius: 12px;
+      background: rgba(246,232,200,.075);
+      border: 1px solid rgba(246,232,200,.11);
+      border-radius: 13px;
       padding: 12px;
     }
 
@@ -410,33 +469,84 @@
 
     .footer-note {
       text-align: center;
-      padding: 16px;
+      padding: 18px;
       font-size: 12px;
-      color: var(--sage);
+      color: var(--muted);
       line-height: 1.5;
+      position: relative;
+      z-index: 1;
     }
 
-    .small-link {
-      border: none;
-      background: none;
-      color: var(--green);
-      text-decoration: underline;
-      font-weight: 800;
-      cursor: pointer;
-      padding: 0;
+    .help-box {
+      background: rgba(216,181,109,.08);
+      border: 1.5px solid rgba(216,181,109,.18);
+      border-radius: 14px;
+      padding: 13px;
+      margin-top: 10px;
+    }
+
+    .checkline {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 8px;
+      align-items: start;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(246,232,200,.11);
+    }
+
+    .checkline input {
+      width: 21px;
+      height: 21px;
+      accent-color: var(--gold);
+      margin-top: 1px;
+    }
+
+    .checkline .small-link, .checkline button, .checkline a {
+      color: var(--gold-2);
+      border: 1px solid rgba(216,181,109,.22);
+      background: rgba(216,181,109,.06);
+      border-radius: 9px;
+      padding: 4px 7px;
+      font-weight: 900;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+
+    .weather-helper {
+      background: rgba(216,181,109,.08);
+      border: 1.5px solid rgba(216,181,109,.18);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+
+    .weather-status {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .weather-status strong {
+      color: var(--gold-2);
     }
 
     @media (min-width: 680px) {
       .two-col { grid-template-columns: 1fr 1fr; }
-      .logo { font-size: 34px; }
-      .tabs { top: 82px; }
+      .logo { font-size: 56px; }
+      .header { padding-top: 38px; }
+      .card { padding: 22px; }
     }
 
     @media print {
       .tabs, .header, .btn, .footer-note { display: none !important; }
-      .card { box-shadow: none; border: 1px solid #ddd; }
-      body { background: white; }
+      body { background: white; color: black; }
+      .card, .mini-card { box-shadow: none; border: 1px solid #ddd; background: white; color: black; }
+      .body, h2, h3 { color: black; }
     }
+
   </style>
 </head>
 <body>
@@ -486,6 +596,17 @@
             <button class="pill">Dad home by 5:30</button>
             <button class="pill">Dad home all day</button>
           </div>
+        </div>
+
+
+        <div class="weather-helper">
+          <p class="section-label">Live weather</p>
+          <p class="body">Let the app choose weather + temperature for you, then change it manually if needed.</p>
+          <div class="row" style="margin-top:12px;">
+            <button type="button" class="btn secondary small" id="useWeatherBtn">Use current weather</button>
+            <button type="button" class="btn muted small" id="useHendersonWeatherBtn">Use Henderson weather</button>
+          </div>
+          <p class="weather-status" id="weatherStatus">Not checked yet.</p>
         </div>
 
         <div class="question">
@@ -782,7 +903,7 @@
     </main>
 
     <p class="footer-note">
-      Wild + Rooted is a year-round prototype. Static GitHub version: no server, no account, no tracking. Calendar screenshot/Apple Calendar connection requires a future backend or mobile app.
+      Wild + Rooted is a private, year-round family rhythm prototype. Static GitHub version: no server, no account, no tracking. Calendar screenshot/Apple Calendar connection requires a future backend or mobile app.
     </p>
   </div>
 
