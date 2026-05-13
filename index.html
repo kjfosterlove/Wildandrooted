@@ -542,29 +542,6 @@
       padding-bottom: 10px;
       border-bottom: 1px solid rgba(246,232,200,.10);
     }
-
-    .circle-step-num {
-      min-width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: rgba(216,181,109,.16);
-      color: var(--gold-2);
-      font-weight: 900;
-      font-size: 12px;
-    }
-
-
-    .circle-step {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      margin-bottom: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(246,232,200,.10);
-    }
-
     .circle-step-num {
       min-width: 28px;
       height: 28px;
@@ -603,7 +580,7 @@
     <div class="tabs">
       <button class="tab active" data-tab="today">Today</button>
       <button class="tab" data-tab="circle">Circle Time</button>
-          <button class="tab" data-tab="bucket">Bucket List</button>
+      <button class="tab" data-tab="bucket">Bucket List</button>
       <button class="tab" data-tab="settings">Settings</button>
       <button class="tab" data-tab="backup">Backup</button>
       <button class="tab" data-tab="memories">Memories</button>
@@ -829,6 +806,7 @@
     </main>
 
 
+    <!-- BUCKET TAB -->
 
     <main id="circleTab" class="hidden">
       <section class="card primary">
@@ -846,149 +824,146 @@
 
         <div class="divider"></div>
 
-        <div id="circleForm">
-          <div class="two-col">
-            <div>
-              <p class="section-label">Ace age</p>
-              <input id="ageAce" class="text-input" value="5" inputmode="numeric" />
-            </div>
-            <div>
-              <p class="section-label">Stone age</p>
-              <input id="ageStone" class="text-input" value="3" inputmode="numeric" />
-            </div>
-            <div>
-              <p class="section-label">Ryder age</p>
-              <input id="ageRyder" class="text-input" value="1" inputmode="numeric" />
-            </div>
+        <div class="two-col">
+          <div>
+            <p class="section-label">Ace age</p>
+            <input id="circleAgeAce" class="text-input" value="5" inputmode="numeric" />
           </div>
-
-          <div class="divider"></div>
-
-          <div class="question">
-            <p class="section-label">Energy level ⚡</p>
-            <div class="pills circle-pills" data-circle-field="energy">
-              <button class="pill">calm</button>
-              <button class="pill">balanced</button>
-              <button class="pill">wiggly</button>
-              <button class="pill">wild</button>
-              <button class="pill">exhausted</button>
-              <button class="pill">emotional</button>
-              <button class="pill">dysregulated</button>
-            </div>
+          <div>
+            <p class="section-label">Stone age</p>
+            <input id="circleAgeStone" class="text-input" value="3" inputmode="numeric" />
           </div>
-
-          <div class="question">
-            <p class="section-label">Mom bandwidth 🤍</p>
-            <div class="pills circle-pills" data-circle-field="bandwidth">
-              <button class="pill">thriving</button>
-              <button class="pill">normal</button>
-              <button class="pill">tired</button>
-              <button class="pill">overstimulated</button>
-              <button class="pill">survival mode</button>
-            </div>
+          <div>
+            <p class="section-label">Ryder age</p>
+            <input id="circleAgeRyder" class="text-input" value="1" inputmode="numeric" />
           </div>
-
-          <div class="question">
-            <p class="section-label">Weather 🌦️</p>
-            <div class="pills circle-pills" data-circle-field="weather">
-              <button class="pill">sunny</button>
-              <button class="pill">cloudy</button>
-              <button class="pill">rainy</button>
-              <button class="pill">snowy</button>
-              <button class="pill">windy</button>
-              <button class="pill">stormy</button>
-              <button class="pill">hot</button>
-              <button class="pill">freezing</button>
-            </div>
-          </div>
-
-          <div class="question">
-            <p class="section-label">Current season 🍂</p>
-            <div class="pills circle-pills" data-circle-field="season">
-              <button class="pill">spring</button>
-              <button class="pill">summer</button>
-              <button class="pill">fall</button>
-              <button class="pill">winter</button>
-            </div>
-          </div>
-
-          <div class="question">
-            <p class="section-label">Desired focus of the day</p>
-            <div class="pills circle-pills" data-circle-field="focus">
-              <button class="pill">connection</button>
-              <button class="pill">regulation</button>
-              <button class="pill">learning</button>
-              <button class="pill">nature</button>
-              <button class="pill">movement</button>
-              <button class="pill">calm</button>
-              <button class="pill">creativity</button>
-              <button class="pill">independence</button>
-              <button class="pill">faith</button>
-              <button class="pill">practical life</button>
-            </div>
-          </div>
-
-          <div class="question">
-            <p class="section-label">Available time ⏳</p>
-            <div class="pills circle-pills" data-circle-field="time">
-              <button class="pill">5 min</button>
-              <button class="pill">10 min</button>
-              <button class="pill">20 min</button>
-              <button class="pill">30+ min</button>
-            </div>
-          </div>
-
-          <div class="question">
-            <p class="section-label">Indoor or outdoor?</p>
-            <div class="pills circle-pills" data-circle-field="place">
-              <button class="pill">indoor</button>
-              <button class="pill">outdoor</button>
-              <button class="pill">start outdoors</button>
-              <button class="pill">either</button>
-            </div>
-          </div>
-
-          <div class="question">
-            <p class="section-label">Attention span today</p>
-            <div class="pills circle-pills" data-circle-field="attention">
-              <button class="pill">focused</button>
-              <button class="pill">average</button>
-              <button class="pill">distracted</button>
-              <button class="pill">chaotic</button>
-            </div>
-          </div>
-
-          <div class="question">
-            <p class="section-label">Sensory needs</p>
-            <div class="pills circle-pills" data-circle-field="sensory">
-              <button class="pill">needs movement</button>
-              <button class="pill">needs quiet</button>
-              <button class="pill">needs tactile play</button>
-              <button class="pill">needs deep pressure</button>
-              <button class="pill">sound sensitive</button>
-              <button class="pill">seeking stimulation</button>
-            </div>
-          </div>
-
-          <div class="question">
-            <p class="section-label">Group dynamic</p>
-            <div class="pills circle-pills" data-circle-field="dynamic">
-              <button class="pill">everyone home</button>
-              <button class="pill">baby sleeping</button>
-              <button class="pill">mixed ages</button>
-              <button class="pill">only older child</button>
-              <button class="pill">sibling conflict today</button>
-            </div>
-          </div>
-
-          <button class="btn" id="generateCircleBtn" disabled>Choose circle time inputs</button>
         </div>
+
+        <div class="divider"></div>
+
+        <div class="question">
+          <p class="section-label">Energy level ⚡</p>
+          <div class="pills circle-group" data-key="energy">
+            <button class="pill" type="button">calm</button>
+            <button class="pill" type="button">balanced</button>
+            <button class="pill" type="button">wiggly</button>
+            <button class="pill" type="button">wild</button>
+            <button class="pill" type="button">exhausted</button>
+            <button class="pill" type="button">emotional</button>
+            <button class="pill" type="button">dysregulated</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Mom bandwidth 🤍</p>
+          <div class="pills circle-group" data-key="bandwidth">
+            <button class="pill" type="button">thriving</button>
+            <button class="pill" type="button">normal</button>
+            <button class="pill" type="button">tired</button>
+            <button class="pill" type="button">overstimulated</button>
+            <button class="pill" type="button">survival mode</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Weather 🌦️</p>
+          <div class="pills circle-group" data-key="weather">
+            <button class="pill" type="button">sunny</button>
+            <button class="pill" type="button">cloudy</button>
+            <button class="pill" type="button">rainy</button>
+            <button class="pill" type="button">snowy</button>
+            <button class="pill" type="button">windy</button>
+            <button class="pill" type="button">stormy</button>
+            <button class="pill" type="button">hot</button>
+            <button class="pill" type="button">freezing</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Season 🍂</p>
+          <div class="pills circle-group" data-key="season">
+            <button class="pill" type="button">spring</button>
+            <button class="pill" type="button">summer</button>
+            <button class="pill" type="button">fall</button>
+            <button class="pill" type="button">winter</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Desired focus of the day</p>
+          <div class="pills circle-group" data-key="focus">
+            <button class="pill" type="button">connection</button>
+            <button class="pill" type="button">regulation</button>
+            <button class="pill" type="button">learning</button>
+            <button class="pill" type="button">nature</button>
+            <button class="pill" type="button">movement</button>
+            <button class="pill" type="button">calm</button>
+            <button class="pill" type="button">creativity</button>
+            <button class="pill" type="button">independence</button>
+            <button class="pill" type="button">faith</button>
+            <button class="pill" type="button">practical life</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Available time ⏳</p>
+          <div class="pills circle-group" data-key="time">
+            <button class="pill" type="button">5 min</button>
+            <button class="pill" type="button">10 min</button>
+            <button class="pill" type="button">20 min</button>
+            <button class="pill" type="button">30+ min</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Indoor or outdoor?</p>
+          <div class="pills circle-group" data-key="place">
+            <button class="pill" type="button">indoor</button>
+            <button class="pill" type="button">outdoor</button>
+            <button class="pill" type="button">start outdoors</button>
+            <button class="pill" type="button">either</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Attention span today</p>
+          <div class="pills circle-group" data-key="attention">
+            <button class="pill" type="button">focused</button>
+            <button class="pill" type="button">average</button>
+            <button class="pill" type="button">distracted</button>
+            <button class="pill" type="button">chaotic</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Sensory needs</p>
+          <div class="pills circle-group" data-key="sensory">
+            <button class="pill" type="button">needs movement</button>
+            <button class="pill" type="button">needs quiet</button>
+            <button class="pill" type="button">needs tactile play</button>
+            <button class="pill" type="button">needs deep pressure</button>
+            <button class="pill" type="button">sound sensitive</button>
+            <button class="pill" type="button">seeking stimulation</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p class="section-label">Group dynamic</p>
+          <div class="pills circle-group" data-key="dynamic">
+            <button class="pill" type="button">everyone home</button>
+            <button class="pill" type="button">baby sleeping</button>
+            <button class="pill" type="button">mixed ages</button>
+            <button class="pill" type="button">only older child</button>
+            <button class="pill" type="button">sibling conflict today</button>
+          </div>
+        </div>
+
+        <button class="btn" id="circleBuildBtn" type="button">Build our Circle Time ✨</button>
+        <p class="copy-status" id="circleMissingText"></p>
       </section>
 
-      <section id="circleResult" class="hidden">
-        <div class="affirm">
-          <p id="circleAffirm"></p>
-        </div>
+      <section id="circleOutput" class="hidden">
+        <div class="affirm"><p id="circleAffirm"></p></div>
 
         <div class="card primary">
           <div class="suggestion-head">
@@ -1002,17 +977,14 @@
           <p class="body" id="circleWhy"></p>
 
           <div class="divider"></div>
-
           <p class="section-label">Circle Time Flow</p>
           <div id="circleFlow"></div>
 
           <div class="divider"></div>
-
           <p class="section-label">Age-specific expectations</p>
           <div id="circleAges"></div>
 
           <div class="divider"></div>
-
           <div class="two-col">
             <div class="mini-card"><p class="section-label">Gather</p><div id="circleGather"></div></div>
             <div class="mini-card"><p class="section-label">Wonder</p><div id="circleWonder"></div></div>
@@ -1024,22 +996,19 @@
           </div>
 
           <div class="divider"></div>
-
           <p class="section-label">Tiny prep list</p>
           <div class="tags" id="circlePrep"></div>
 
           <div class="divider"></div>
-
           <div class="row">
-            <button class="btn secondary small" id="respinCircleBtn">Respin Circle Time</button>
-            <button class="btn muted small" id="resetCircleBtn">Reset Circle Time</button>
+            <button class="btn secondary small" id="circleRespinBtn" type="button">Respin Circle Time</button>
+            <button class="btn muted small" id="circleResetBtn" type="button">Reset Circle Time</button>
           </div>
         </div>
       </section>
     </main>
 
 
-    <!-- BUCKET TAB -->
     <main id="bucketTab" class="hidden">
       <section class="card">
         <p class="section-label">Family bucket list</p>
@@ -1664,7 +1633,6 @@
       button.classList.add("active");
       form[field] = button.textContent.trim();
       updateGenerateButton();
-      updateCircleButton();
     }
 
     function formComplete() {
@@ -2289,114 +2257,77 @@
     }
 
 
-    const circleState = {
-      energy: "", bandwidth: "", weather: "", season: "", focus: "",
-      time: "", place: "", attention: "", sensory: "", dynamic: ""
-    };
-
-
-    function getCircleSelectionsFromDOM(){
-      const selections = {};
-      document.querySelectorAll(".circle-pills").forEach(group => {
-        const field = group.dataset.circleField;
-        const active = group.querySelector(".pill.active");
-        selections[field] = active ? active.textContent.trim() : "";
-      });
-      return selections;
+    function circleValue(key){
+      const group = document.querySelector(`.circle-group[data-key="${key}"]`);
+      const active = group ? group.querySelector(".pill.active") : null;
+      return active ? active.textContent.trim() : "";
     }
 
-    function syncCircleStateFromDOM(){
-      const selections = getCircleSelectionsFromDOM();
-      Object.keys(circleState).forEach(k => {
-        circleState[k] = selections[k] || "";
-      });
-      return selections;
+    function getCircleData(){
+      return {
+        energy: circleValue("energy"),
+        bandwidth: circleValue("bandwidth"),
+        weather: circleValue("weather"),
+        season: circleValue("season"),
+        focus: circleValue("focus"),
+        time: circleValue("time"),
+        place: circleValue("place"),
+        attention: circleValue("attention"),
+        sensory: circleValue("sensory"),
+        dynamic: circleValue("dynamic")
+      };
     }
 
-    function circleMissingFields(){
-      const selections = getCircleSelectionsFromDOM();
-      const required = ["energy","bandwidth","weather","season","focus","time","place","attention","sensory","dynamic"];
-      return required.filter(k => !selections[k]);
-    }
-
-    function forceCircleButtonState(){
-      const btn = byId("generateCircleBtn");
-      if(!btn) return;
-      const missing = circleMissingFields();
-      const ready = missing.length === 0;
-      btn.disabled = !ready;
-      if(ready){
-        btn.textContent = "Build our Circle Time ✨";
-      } else if(missing.length === 1){
-        btn.textContent = "1 choice left";
-      } else {
-        btn.textContent = `${missing.length} choices left`;
-      }
-    }
-
-
-    function updateCircleButton(){
-      forceCircleButtonState();
-    }
-
-    function circleCoreReady(){
-      return circleMissingFields().length === 0;
-    }
-
-    function selectCirclePill(button){
-      const group = button.closest(".circle-pills");
-      const field = group.dataset.circleField;
-      group.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-      button.classList.add("active");
-      syncCircleStateFromDOM();
-      forceCircleButtonState();
+    function missingCircleKeys(data){
+      return Object.keys(data).filter(k => !data[k]);
     }
 
     function circleLine(text){
       return `<div class="line-row"><span style="color:var(--gold);font-weight:900;">→</span><p class="body">${esc(text)}</p></div>`;
     }
 
-    function getCircleTheme(){
-      const s = circleState;
-      if(s.bandwidth === "survival mode") return { title:"Tiny Mercy Circle", emoji:"🕯", affirm:"This counts. A five-minute rhythm is still a faithful rhythm." };
-      if(["wild","dysregulated"].includes(s.energy) || s.focus === "regulation") return { title:"Regulation + Roots", emoji:"🌲", affirm:"Regulation before education is not lowering the standard — it is preparing the soil." };
-      if(s.weather === "rainy") return { title:"Rainy Wonder Day", emoji:"🌧", affirm:"Rainy days are not wasted days; they are invitation days." };
-      if(s.weather === "snowy" || s.weather === "freezing") return { title:"Cozy Winter Circle", emoji:"❄️", affirm:"Cold days can still be rich, warm, and rooted." };
-      if(s.focus === "faith") return { title:"Faith + Wonder Circle", emoji:"🕊", affirm:"A small candle, a short prayer, and a living idea can shape the whole day." };
-      if(s.focus === "movement") return { title:"Wiggle + Wonder Circle", emoji:"🐾", affirm:"Movement can be the doorway into attention." };
-      if(s.focus === "independence") return { title:"Little Helpers Circle", emoji:"🧺", affirm:"Independence grows through small, real responsibilities." };
-      if(s.focus === "nature") return { title:"Nature Noticing Circle", emoji:"🍃", affirm:"Attention is trained by noticing what God placed right in front of you." };
-      if(s.focus === "creativity") return { title:"Create + Connect Circle", emoji:"🎨", affirm:"Making something small together can anchor the day." };
-      if(s.focus === "calm") return { title:"Quiet Hearth Circle", emoji:"☕", affirm:"Calm is not laziness; calm is a gift you can build into the room." };
-      return { title:"Grounded Morning Circle", emoji:"🌿", affirm:"You are not recreating school. You are cultivating a family rhythm." };
+    function circleStep(text, i){
+      return `<div class="circle-step"><div class="circle-step-num">${i + 1}</div><p class="body">${esc(text)}</p></div>`;
     }
 
-    function getCircleLength(){
-      const t = circleState.time;
-      if(t === "5 min") return { steps:4, story:"one short poem or one board book", craft:"none", movement:"one heavy work movement" };
-      if(t === "10 min") return { steps:5, story:"one short picture book", craft:"one tiny drawing or object lesson", movement:"one movement game" };
-      if(t === "20 min") return { steps:7, story:"one picture book + short poem", craft:"simple hands-on response", movement:"movement before and after reading" };
-      return { steps:8, story:"picture book, poem, and optional scripture", craft:"watercolor, nature journal, or practical life extension", movement:"full movement + outdoor explore option" };
+    function renderCircleTags(id, items){
+      const el = byId(id);
+      if(!el) return;
+      el.innerHTML = items.map(item => `<span class="tag">${esc(item)}</span>`).join("");
     }
 
-    function buildCirclePlan(){
-      syncCircleStateFromDOM();
-      if(!circleCoreReady()){
-        forceCircleButtonState();
-        const firstMissing = circleMissingFields()[0];
-        const firstGroup = firstMissing ? document.querySelector(`.circle-pills[data-circle-field="${firstMissing}"]`) : null;
-        if(firstGroup) firstGroup.scrollIntoView({ behavior:"smooth", block:"center" });
+    function buildCircleTime(){
+      const data = getCircleData();
+      const missing = missingCircleKeys(data);
+      const missingText = byId("circleMissingText");
+
+      if(missing.length){
+        missingText.textContent = `Missing: ${missing.join(", ")}`;
+        const first = document.querySelector(`.circle-group[data-key="${missing[0]}"]`);
+        if(first) first.scrollIntoView({ behavior:"smooth", block:"center" });
         return;
       }
-      const s = circleState;
-      const theme = getCircleTheme();
-      const length = getCircleLength();
 
-      const lowBandwidth = ["tired","overstimulated","survival mode"].includes(s.bandwidth);
-      const highEnergy = ["wiggly","wild","dysregulated"].includes(s.energy);
-      const lowAttention = ["distracted","chaotic"].includes(s.attention);
-      const outdoor = ["outdoor","start outdoors"].includes(s.place) || highEnergy || s.sensory === "needs movement";
-      const quietNeeded = s.sensory === "needs quiet" || s.sensory === "sound sensitive" || s.focus === "calm";
+      missingText.textContent = "";
+
+      const lowBandwidth = ["tired","overstimulated","survival mode"].includes(data.bandwidth);
+      const highEnergy = ["wiggly","wild","dysregulated"].includes(data.energy);
+      const lowAttention = ["distracted","chaotic"].includes(data.attention);
+      const quietNeeded = ["needs quiet","sound sensitive"].includes(data.sensory) || data.focus === "calm";
+      const outsideHelpful = ["outdoor","start outdoors"].includes(data.place) || highEnergy || data.sensory === "needs movement";
+
+      let title = "Grounded Morning Circle";
+      let emoji = "🌿";
+      let affirm = "You are not recreating school. You are cultivating a family rhythm.";
+
+      if(data.bandwidth === "survival mode"){ title = "Tiny Mercy Circle"; emoji = "🕯"; affirm = "This counts. A five-minute rhythm is still a faithful rhythm."; }
+      else if(highEnergy || data.focus === "regulation"){ title = "Regulation + Roots"; emoji = "🌲"; affirm = "Regulation before education is not lowering the standard — it is preparing the soil."; }
+      else if(data.weather === "rainy"){ title = "Rainy Wonder Day"; emoji = "🌧"; affirm = "Rainy days are not wasted days; they are invitation days."; }
+      else if(data.weather === "snowy" || data.weather === "freezing"){ title = "Cozy Winter Circle"; emoji = "❄️"; affirm = "Cold days can still be rich, warm, and rooted."; }
+      else if(data.focus === "faith"){ title = "Faith + Wonder Circle"; emoji = "🕊"; affirm = "A small prayer, a short hymn, and a living idea can shape the whole day."; }
+      else if(data.focus === "movement"){ title = "Wiggle + Wonder Circle"; emoji = "🐾"; affirm = "Movement can be the doorway into attention."; }
+      else if(data.focus === "practical life"){ title = "Little Helpers Circle"; emoji = "🧺"; affirm = "Independence grows through small, real responsibilities."; }
+      else if(data.focus === "creativity"){ title = "Create + Connect Circle"; emoji = "🎨"; affirm = "Making something small together can anchor the day."; }
 
       const weatherPrompts = {
         sunny: "Notice where the light lands and how shadows move.",
@@ -2432,72 +2363,59 @@
 
       const create = lowBandwidth
         ? ["No craft required", "Optional: draw one thing you noticed"]
-        : s.focus === "creativity"
+        : data.focus === "creativity"
           ? ["Watercolor the weather", "Make a nature tray", "Draw or build the story setting"]
           : ["Draw one object", "Build with blocks", "Nature journal one tiny thing"];
 
-      const regulate = s.bandwidth === "survival mode"
+      const regulate = data.bandwidth === "survival mode"
         ? ["Audio story", "Tea or water", "Simple sensory bin", "Outdoor free play"]
         : ["Three deep breaths", "Heavy work", "Quiet corner afterward"];
 
-      const explore = outdoor
-        ? ["Step outside for 2 minutes", "Find one seasonal thing", `Look for ${seasonalPrompts[s.season]?.[0] || "something interesting"}`]
+      const explore = outsideHelpful
+        ? ["Step outside for 2 minutes", "Find one seasonal thing", `Look for ${seasonalPrompts[data.season][0]}`]
         : ["Window watch", "Indoor scavenger hunt", "Touch and describe one natural object"];
 
-      const flowBase = [];
-      flowBase.push("Gather: candle/curtains + short prayer");
-      if(highEnergy) flowBase.push("Move first: heavy work before sitting");
-      flowBase.push(`Wonder: ${weatherPrompts[s.weather] || "Notice the day outside."}`);
-      flowBase.push(`Read: ${length.story}`);
-      if(!lowBandwidth && !lowAttention) flowBase.push("Memory: hymn line, Psalm phrase, or tiny poem");
-      flowBase.push(`Move: ${movement[0]}`);
-      if(length.craft !== "none") flowBase.push(`Create: ${length.craft}`);
-      flowBase.push("Close: ask, “What does our family need next?”");
-
-      const flow = flowBase.slice(0, length.steps);
+      const flow = [];
+      flow.push("Gather: candle/curtains + short prayer");
+      if(highEnergy) flow.push("Move first: heavy work before sitting");
+      flow.push(`Wonder: ${weatherPrompts[data.weather]}`);
+      flow.push(data.time === "5 min" ? "Read: one poem or one board book" : "Read: one living picture book slowly");
+      if(!lowBandwidth && !lowAttention) flow.push("Memory: hymn line, Psalm phrase, or tiny poem");
+      flow.push(`Move: ${movement[0]}`);
+      if(data.time !== "5 min") flow.push(`Create: ${create[0]}`);
+      flow.push("Close: ask, “What does our family need next?”");
 
       const ageNotes = [
-        `Ace (${byId("ageAce").value || "5"}): give him the oldest-child job — weather reporter, candle helper, counting, first narration, or choosing the nature word.`,
-        `Stone (${byId("ageStone").value || "3"}): give him a concrete job — hold the book, point to the picture, carry the basket, act like the animal, or repeat one phrase.`,
-        `Ryder (${byId("ageRyder").value || "1"}): plan for participation through movement, touch, snack, lap time, or a safe object to hold. His attention span is allowed to be tiny.`
+        `Ace (${byId("circleAgeAce").value || "5"}): give him the oldest-child job — weather reporter, candle helper, counting, first narration, or choosing the nature word.`,
+        `Stone (${byId("circleAgeStone").value || "3"}): give him a concrete job — hold the book, point to the picture, carry the basket, act like the animal, or repeat one phrase.`,
+        `Ryder (${byId("circleAgeRyder").value || "1"}): plan for participation through movement, touch, snack, lap time, or a safe object to hold. His attention span is allowed to be tiny.`
       ];
 
-      byId("circleTitle").textContent = theme.title;
-      byId("circleEmoji").textContent = theme.emoji;
-      byId("circleAffirm").textContent = theme.affirm;
-      byId("circleWhy").textContent = `Today is a ${s.energy} / ${s.bandwidth} day with a focus on ${s.focus}. The plan is intentionally shaped around ${s.time}, ${s.attention} attention, and sensory need: ${s.sensory}.`;
+      byId("circleTitle").textContent = title;
+      byId("circleEmoji").textContent = emoji;
+      byId("circleAffirm").textContent = affirm;
+      byId("circleWhy").textContent = `Today is a ${data.energy} / ${data.bandwidth} day with a focus on ${data.focus}. The plan is shaped around ${data.time}, ${data.attention} attention, and sensory need: ${data.sensory}.`;
 
-      byId("circleFlow").innerHTML = flow.map((item, i) => `
-        <div class="circle-step">
-          <div class="circle-step-num">${i + 1}</div>
-          <p class="body">${esc(item)}</p>
-        </div>
-      `).join("");
-
+      byId("circleFlow").innerHTML = flow.map(circleStep).join("");
       byId("circleAges").innerHTML = ageNotes.map(circleLine).join("");
       byId("circleGather").innerHTML = gather.map(circleLine).join("");
-      byId("circleWonder").innerHTML = [weatherPrompts[s.weather] || "Notice the weather.", `Seasonal focus: ${(seasonalPrompts[s.season] || ["nature"] ).join(", ")}.`].map(circleLine).join("");
+      byId("circleWonder").innerHTML = [weatherPrompts[data.weather], `Seasonal focus: ${seasonalPrompts[data.season].join(", ")}.`].map(circleLine).join("");
       byId("circleRead").innerHTML = read.map(circleLine).join("");
       byId("circleMove").innerHTML = movement.map(circleLine).join("");
       byId("circleCreate").innerHTML = create.map(circleLine).join("");
       byId("circleRegulate").innerHTML = regulate.map(circleLine).join("");
       byId("circleExplore").innerHTML = explore.map(circleLine).join("");
 
-      const prep = lowBandwidth
-        ? ["one book", "water/tea", "blanket or basket"]
-        : ["one book", "one poem or verse", "crayons/paper", "nature basket", "water/snack"];
-      renderTags("circlePrep", prep);
+      renderCircleTags("circlePrep", lowBandwidth ? ["one book", "water/tea", "blanket or basket"] : ["one book", "one poem or verse", "crayons/paper", "nature basket", "water/snack"]);
 
-      byId("circleResult").classList.remove("hidden");
-      byId("circleResult").scrollIntoView({ behavior:"smooth", block:"start" });
+      byId("circleOutput").classList.remove("hidden");
+      byId("circleOutput").scrollIntoView({ behavior:"smooth", block:"start" });
     }
 
-    function resetCircleTime(){
-      document.querySelectorAll(".circle-pills .pill").forEach(p => p.classList.remove("active"));
-      Object.keys(circleState).forEach(k => circleState[k] = "");
-      syncCircleStateFromDOM();
-      byId("circleResult").classList.add("hidden");
-      updateCircleButton();
+    function resetCircleTimeClean(){
+      document.querySelectorAll(".circle-group .pill").forEach(p => p.classList.remove("active"));
+      byId("circleOutput").classList.add("hidden");
+      byId("circleMissingText").textContent = "";
     }
 
 
@@ -2508,8 +2426,13 @@
         btn.addEventListener("click", () => selectPill(btn));
       });
 
-      document.querySelectorAll(".circle-pills .pill").forEach(btn => {
-        btn.addEventListener("click", () => selectCirclePill(btn));
+      document.querySelectorAll(".circle-group .pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const group = btn.closest(".circle-group");
+          group.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+          btn.classList.add("active");
+          byId("circleMissingText").textContent = "";
+        });
       });
 
       document.querySelectorAll(".tab").forEach(tab => {
@@ -2517,10 +2440,9 @@
       });
 
       document.getElementById("generateBtn").addEventListener("click", generateResult);
-      document.getElementById("generateCircleBtn").addEventListener("click", buildCirclePlan);
-      document.getElementById("generateCircleBtn").onclick = buildCirclePlan;
-      document.getElementById("respinCircleBtn").addEventListener("click", buildCirclePlan);
-      document.getElementById("resetCircleBtn").addEventListener("click", resetCircleTime);
+      document.getElementById("circleBuildBtn").addEventListener("click", buildCircleTime);
+      document.getElementById("circleRespinBtn").addEventListener("click", buildCircleTime);
+      document.getElementById("circleResetBtn").addEventListener("click", resetCircleTimeClean);
       document.getElementById("copyInviteBtn").addEventListener("click", copyInvite);
       document.getElementById("saveMemoryBtn").addEventListener("click", saveMemory);
       document.getElementById("respinBtn").addEventListener("click", () => generateResult(true));
@@ -2541,22 +2463,7 @@
       updateGenerateButton();
     }
 
-
     init();
-
-    // Circle Time safety pass: makes the Circle button work even if browser cached older handlers.
-    setTimeout(() => {
-      document.querySelectorAll(".circle-pills .pill").forEach(btn => {
-        btn.onclick = () => selectCirclePill(btn);
-      });
-      const circleBtn = byId("generateCircleBtn");
-      if(circleBtn) {
-        circleBtn.onclick = buildCirclePlan;
-        circleBtn.addEventListener("click", buildCirclePlan);
-      }
-      syncCircleStateFromDOM();
-      forceCircleButtonState();
-    }, 50);
   </script>
 </body>
 </html>
