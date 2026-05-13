@@ -2268,6 +2268,11 @@
     }
 
 
+
+    function byId(id){
+      return document.getElementById(id);
+    }
+
     function circleValue(key){
       const group = document.querySelector(`.circle-group[data-key="${key}"]`);
       const active = group ? group.querySelector(".pill.active") : null;
