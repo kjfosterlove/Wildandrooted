@@ -542,6 +542,13 @@
         <div class="question">
           <p class="section-label">Calendar reality</p>
           <textarea id="calendarText" class="textarea" placeholder="Optional: paste today's events, locations, t-ball, Sports RTC, appointments, show times, etc. Example: T-ball in Lincoln at 10am. Sports RTC at 5:30."></textarea>
+          <div style="margin-top:10px;">
+            <input id="calendarImageInput" type="file" accept="image/*" class="hidden" />
+            <button class="btn secondary small" id="chooseCalendarBtn" type="button">Upload calendar screenshot</button>
+            <button class="btn muted small" id="readCalendarBtn" type="button" disabled>Read screenshot</button>
+            <p class="muted-text" id="calendarOcrStatus">Static web apps cannot directly connect to Apple Calendar yet, but this can try to read a screenshot.</p>
+            <img id="calendarPreview" class="hidden" alt="Calendar preview" style="max-width:100%;max-height:160px;border-radius:12px;margin-top:10px;border:1px solid var(--tan);" />
+          </div>
         </div>
 
         <div class="question">
@@ -597,6 +604,11 @@
 
           <p class="section-label">Homeschool tie-in</p>
           <p class="body" id="homeschoolTieIn"></p>
+
+          <div class="divider"></div>
+
+          <p class="section-label">Charlotte Mason + Montessori activity pack</p>
+          <div id="learningPack"></div>
 
           <div class="divider"></div>
 
@@ -670,8 +682,26 @@
 
         <div class="divider"></div>
 
+        <p class="section-label">Custom activity ideas</p>
+        <textarea id="customIdeasSettings" class="textarea" placeholder="One per line. Format: Name | Area | Budget | Recovery | Needs Dad yes/no | Prep items comma list | Homeschool note
+Example: Paint Yourself Silly | Lincoln | Moderate | medium | no | water bottles, wipes, extra clothes | Art appreciation, hand strength, color mixing, and careful work."></textarea>
+        <p class="muted-text">These will be mixed into the daily suggestion engine.</p>
+
+        <div class="divider"></div>
+
         <button class="btn" id="saveSettingsBtn">Save settings</button>
         <p class="copy-status" id="settingsSaved"></p>
+      </section>
+
+      <section class="card">
+        <p class="section-label">Backup / transfer</p>
+        <p class="body">Download your local settings and memories, then upload them into another version or device.</p>
+        <div class="row" style="margin-top:12px;">
+          <button class="btn secondary small" id="exportBackupBtn" type="button">Download backup</button>
+          <button class="btn muted small" id="chooseImportBtn" type="button">Upload backup</button>
+          <input id="importBackupInput" type="file" accept="application/json,.json" class="hidden" />
+        </div>
+        <p class="copy-status" id="backupStatus"></p>
       </section>
 
       <section class="card">
@@ -703,6 +733,7 @@
     </p>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script>
     const DEFAULT_PEOPLE = [
       { name: "Jade + Roman", area: "Henderson/York", type: "casual" },
@@ -735,7 +766,8 @@
       people: "wildRooted_people",
       passes: "wildRooted_passes",
       streaming: "wildRooted_streaming",
-      memories: "wildRooted_memories"
+      memories: "wildRooted_memories",
+      customIdeas: "wildRooted_customIdeas"
     };
 
     const activities = [
@@ -1188,6 +1220,9 @@
       if (!localStorage.getItem(STORAGE.memories)) {
         localStorage.setItem(STORAGE.memories, JSON.stringify([]));
       }
+      if (!localStorage.getItem(STORAGE.customIdeas)) {
+        localStorage.setItem(STORAGE.customIdeas, "");
+      }
     }
 
     function selectPill(button) {
@@ -1347,8 +1382,42 @@
       return { score, why: [...new Set(why.concat(a.reasons.slice(0, 3)))] };
     }
 
+    function getCustomActivities() {
+      const raw = localStorage.getItem(STORAGE.customIdeas) || "";
+      return raw.split("\n").map((line, idx) => {
+        const parts = line.split("|").map(s => (s || "").trim());
+        const [name, area, budget, recovery, dadNeed, prep, homeschool] = parts;
+        if (!name) return null;
+        const normalizedRecovery = ["low", "medium", "high"].includes((recovery || "").toLowerCase()) ? recovery.toLowerCase() : "medium";
+        const needsDad = (dadNeed || "").toLowerCase().includes("yes");
+        return {
+          id: "custom-" + idx + "-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          name,
+          emoji: "✨",
+          area: area || "Local",
+          type: "custom",
+          budget: budget || "Variable",
+          recovery: normalizedRecovery,
+          dad: needsDad ? "yes" : "no",
+          weather: ["Sunny", "Cloudy", "Rainy", "Stormy"],
+          temp: ["Cool under 65", "Nice 65-80", "Hot 80+"],
+          prep: prep ? prep.split(",").map(x => x.trim()).filter(Boolean) : ["water bottles", "snacks", "diapers", "wipes"],
+          reasons: ["custom idea", "family-specific", "saved by you"],
+          homeschool: homeschool || "Use this as a real-life learning moment: observe carefully, use good words, practice independence, and let the boys tell or draw one thing they noticed.",
+          nostalgia: "It feels personal because this is one of your family's own ideas, not a generic activity list.",
+          media: { title: "Search manually: gentle audiobook or playlist", platform: "Libby or Spotify", type: "audiobook", note: "Use only if it helps the transition or drive." },
+          meals: { before: "Feed everyone before starting so the activity is not carried by snacks.", during: "Pack water and one tidy snack if you are leaving home.", after: "Keep the next meal simple and realistic." },
+          recoveryPlan: ["Keep the scope small enough to end well.", "Save one note afterward if it created a sweet memory."]
+        };
+      }).filter(Boolean);
+    }
+
+    function getAllActivities() {
+      return activities.concat(getCustomActivities());
+    }
+
     function selectBestActivities(avoidRecent = false) {
-      const scored = activities.map(a => ({ ...a, ...scoreActivity(a, avoidRecent) }))
+      const scored = getAllActivities().map(a => ({ ...a, ...scoreActivity(a, avoidRecent) }))
         .filter(a => a.score > -100)
         .sort((a, b) => b.score - a.score);
 
@@ -1514,6 +1583,7 @@
       `).join("");
 
       document.getElementById("homeschoolTieIn").textContent = a.homeschool;
+      renderLearningPack(a);
       document.getElementById("nostalgiaFactor").textContent = a.nostalgia;
       document.getElementById("mediaTitle").textContent = a.media.title;
       document.getElementById("mediaPlatform").textContent = `${a.media.platform} — ${a.media.type}`;
@@ -1555,7 +1625,7 @@
     function openBackup(index) {
       if (!currentResult || !currentResult.backups[index]) return;
       const selected = currentResult.backups[index];
-      const remaining = activities
+      const remaining = getAllActivities()
         .map(a => ({ ...a, ...scoreActivity(a, true) }))
         .filter(a => a.score > -100 && a.id !== selected.id)
         .sort((a, b) => b.score - a.score)
@@ -1584,6 +1654,78 @@
       if (a.area === "Lincoln" && calendarInLincoln()) return "A useful Lincoln add-on because you may already be nearby.";
       if (a.type === "indoor") return "A solid backup if weather or kid energy makes outside play less realistic.";
       return "Still fits enough of today’s reality to be worth keeping in your pocket.";
+    }
+
+    function getLearningPack(a) {
+      const base = {
+        preschool: "Name 3 things you see, touch, or hear. Sort something by color, size, texture, or kind.",
+        kindergarten: "Draw one thing from the activity and copy or trace one simple word connected to it.",
+        handsOn: "Give each child one practical job before or after the activity so learning includes real responsibility.",
+        cm: "Use short lessons, careful observation, living language, outside time when possible, and one small moment of narration, drawing, or recitation.",
+        worksheet: "Picture box: draw what you noticed. Trace/copy word: SEE. Circle: big / small. Tell Mom one sentence about it."
+      };
+
+      const packs = {
+        "sac": {
+          preschool: "Sort aircraft pictures or toys into big/small and fast/slow. Practice words: wing, wheel, engine, pilot.",
+          kindergarten: "Draw an airplane with wings, wheels, and a cockpit. Copy: PLANES FLY. Count 5 circles/wheels you see at the museum.",
+          handsOn: "Make a paper airplane before or after. Test whose flies farthest, then try changing one fold.",
+          cm: "Look closely at one aircraft instead of rushing the whole museum. Ask: what was it made to do, who used it, and what does it make you wonder?",
+          worksheet: "SAC MINI PAGE: 1) Circle the thing that helps a plane fly: wing / shoe / spoon. 2) Trace: WING. 3) Draw your favorite plane. 4) Count 3 wheels or circles. 5) Tell Mom: My plane can ____."
+        },
+        "omaha-zoo": {
+          preschool: "Sort animals by how they move: walk, swim, fly, crawl. Make the animal sounds if appropriate.",
+          kindergarten: "Choose one habitat. Draw the animal and add food, water, shelter, and space. Copy: HABITAT.",
+          handsOn: "Build a habitat at home with blocks, blankets, or animal toys.",
+          cm: "Observe one animal slowly for 3 minutes. Notice movement, color, body parts, and behavior before asking for facts.",
+          worksheet: "ZOO MINI PAGE: 1) Draw one animal. 2) Circle where it lives: land / water / trees. 3) Trace: HOME. 4) Tell Mom what it needs to live."
+        },
+        "lincoln-zoo": {
+          preschool: "Pick one animal and move like it. Sort animals by fur, feathers, scales, or shell.",
+          kindergarten: "Draw the animal and copy its name if Mom writes it first. Count legs, wings, or ears.",
+          handsOn: "Make a snack-time animal habitat with crackers, fruit, and cheese pieces.",
+          cm: "Let the child notice before you explain. Ask only one or two thoughtful questions, then let them tell back what mattered.",
+          worksheet: "ANIMAL PAGE: 1) My animal is ____. 2) It has ___ legs. 3) Draw it. 4) Circle: fur / feathers / scales."
+        },
+        "morrill": {
+          preschool: "Compare fossils by size and shape. Practice words: bone, fossil, old, big, tiny.",
+          kindergarten: "Draw one fossil or dinosaur. Copy: FOSSIL. Count spikes, teeth, or bones in a display.",
+          handsOn: "Press toy dinosaurs into playdough to make pretend fossils.",
+          cm: "Treat the museum like a living book: slow down, wonder, and let one exhibit become the story of the day.",
+          worksheet: "FOSSIL PAGE: 1) Trace: BONE. 2) Draw a fossil. 3) Circle: old / new. 4) Tell Mom one thing you wondered."
+        },
+        "pioneers": {
+          preschool: "Find something rough, smooth, green, and tiny. Put treasures in a basket or draw them.",
+          kindergarten: "Make a 4-square nature page: leaf, stick, rock, animal sign. Copy: NATURE.",
+          handsOn: "Start a tiny nature table at home with only safe, non-buggy items.",
+          cm: "Use nature study: direct observation first, names and facts second. Keep it short and joyful.",
+          worksheet: "NATURE WALK PAGE: 1) Draw a leaf. 2) Trace: TREE. 3) Circle what you found: rock / leaf / bug / stick. 4) Tell Mom what changed outside."
+        },
+        "bowling": {
+          preschool: "Count pins knocked down. Practice taking turns and naming emotions when waiting is hard.",
+          kindergarten: "Use simple subtraction: 10 pins, ___ fell, ___ left. Copy: PINS.",
+          handsOn: "Set up plastic cups at home and roll a ball to compare heavy/light and near/far.",
+          cm: "Keep the lesson oral and playful. The experience itself is the living math.",
+          worksheet: "BOWLING MATH: 1) Draw 10 pins. 2) Cross out the pins that fell. 3) Trace: TEN. 4) Tell Mom if the ball rolled fast or slow."
+        }
+      };
+
+      return packs[a.id] || base;
+    }
+
+    function renderLearningPack(a) {
+      const pack = getLearningPack(a);
+      document.getElementById("learningPack").innerHTML = `
+        <div class="box">
+          <div class="meal-row"><span class="meal-label">Preschool</span><p class="body">${escapeHtml(pack.preschool)}</p></div>
+          <div class="meal-row"><span class="meal-label">Kinder</span><p class="body">${escapeHtml(pack.kindergarten)}</p></div>
+          <div class="meal-row"><span class="meal-label">Hands-on</span><p class="body">${escapeHtml(pack.handsOn)}</p></div>
+          <div class="meal-row"><span class="meal-label">CM note</span><p class="body">${escapeHtml(pack.cm)}</p></div>
+          <div class="divider"></div>
+          <p class="section-label">Printable / copy-by-hand mini worksheet</p>
+          <p class="body">${escapeHtml(pack.worksheet)}</p>
+        </div>
+      `;
     }
 
     function renderTags(id, items) {
@@ -1630,6 +1772,10 @@
       document.querySelectorAll(".pills .pill").forEach(p => p.classList.remove("active"));
       document.getElementById("calendarText").value = "";
       document.getElementById("extraNotes").value = "";
+      const preview = document.getElementById("calendarPreview");
+      if (preview) preview.classList.add("hidden");
+      const status = document.getElementById("calendarOcrStatus");
+      if (status) status.textContent = "Static web apps cannot directly connect to Apple Calendar yet, but this can try to read a screenshot.";
       updateGenerateButton();
       document.getElementById("resultScreen").classList.add("hidden");
       document.getElementById("formScreen").classList.remove("hidden");
@@ -1655,6 +1801,7 @@
       localStorage.setItem(STORAGE.people, document.getElementById("peopleSettings").value.trim());
       localStorage.setItem(STORAGE.passes, document.getElementById("passesSettings").value.trim());
       localStorage.setItem(STORAGE.streaming, document.getElementById("streamingSettings").value.trim());
+      localStorage.setItem(STORAGE.customIdeas, document.getElementById("customIdeasSettings").value.trim());
       document.getElementById("settingsSaved").textContent = "Saved.";
       setTimeout(() => document.getElementById("settingsSaved").textContent = "", 2000);
     }
@@ -1685,6 +1832,89 @@
       renderMemories();
     }
 
+    function exportBackup() {
+      const backup = {
+        version: "wild-rooted-v3",
+        exportedAt: new Date().toISOString(),
+        people: localStorage.getItem(STORAGE.people) || "",
+        passes: localStorage.getItem(STORAGE.passes) || "",
+        streaming: localStorage.getItem(STORAGE.streaming) || "",
+        customIdeas: localStorage.getItem(STORAGE.customIdeas) || "",
+        memories: JSON.parse(localStorage.getItem(STORAGE.memories) || "[]")
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "wild-rooted-backup.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      document.getElementById("backupStatus").textContent = "Backup downloaded.";
+      setTimeout(() => document.getElementById("backupStatus").textContent = "", 2500);
+    }
+
+    function importBackupFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const backup = JSON.parse(e.target.result);
+          if (typeof backup.people === "string") localStorage.setItem(STORAGE.people, backup.people);
+          if (typeof backup.passes === "string") localStorage.setItem(STORAGE.passes, backup.passes);
+          if (typeof backup.streaming === "string") localStorage.setItem(STORAGE.streaming, backup.streaming);
+          if (typeof backup.customIdeas === "string") localStorage.setItem(STORAGE.customIdeas, backup.customIdeas);
+          if (Array.isArray(backup.memories)) localStorage.setItem(STORAGE.memories, JSON.stringify(backup.memories));
+          loadSettingsFields();
+          renderMemories();
+          document.getElementById("backupStatus").textContent = "Backup imported.";
+        } catch (err) {
+          document.getElementById("backupStatus").textContent = "Could not import backup file.";
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    let calendarImageFile = null;
+
+    function chooseCalendarImage() {
+      document.getElementById("calendarImageInput").click();
+    }
+
+    function handleCalendarImage(file) {
+      if (!file) return;
+      calendarImageFile = file;
+      const preview = document.getElementById("calendarPreview");
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove("hidden");
+      document.getElementById("readCalendarBtn").disabled = false;
+      document.getElementById("calendarOcrStatus").textContent = "Screenshot ready. Tap Read screenshot to try OCR.";
+    }
+
+    async function readCalendarScreenshot() {
+      if (!calendarImageFile) return;
+      const status = document.getElementById("calendarOcrStatus");
+      if (!window.Tesseract) {
+        status.textContent = "OCR library did not load. Paste your calendar details manually for now.";
+        return;
+      }
+      try {
+        status.textContent = "Reading screenshot... this can take a little bit.";
+        const result = await Tesseract.recognize(calendarImageFile, "eng");
+        const text = (result && result.data && result.data.text || "").trim();
+        if (!text) {
+          status.textContent = "I could not read much from that screenshot. Try cropping closer or paste details manually.";
+          return;
+        }
+        const box = document.getElementById("calendarText");
+        box.value = (box.value ? box.value + "\n" : "") + "Calendar screenshot text:\n" + text;
+        status.textContent = "Calendar text added. You can clean it up before generating.";
+      } catch (err) {
+        status.textContent = "OCR failed. Paste your calendar details manually for now.";
+      }
+    }
+
     function init() {
       saveDefaultsIfNeeded();
 
@@ -1704,6 +1934,12 @@
       document.getElementById("printBtn").addEventListener("click", () => window.print());
       document.getElementById("saveSettingsBtn").addEventListener("click", saveSettings);
       document.getElementById("clearMemoriesBtn").addEventListener("click", clearMemories);
+      document.getElementById("exportBackupBtn").addEventListener("click", exportBackup);
+      document.getElementById("chooseImportBtn").addEventListener("click", () => document.getElementById("importBackupInput").click());
+      document.getElementById("importBackupInput").addEventListener("change", e => importBackupFile(e.target.files[0]));
+      document.getElementById("chooseCalendarBtn").addEventListener("click", chooseCalendarImage);
+      document.getElementById("calendarImageInput").addEventListener("change", e => handleCalendarImage(e.target.files[0]));
+      document.getElementById("readCalendarBtn").addEventListener("click", readCalendarScreenshot);
 
       loadSettingsFields();
       renderMemories();
