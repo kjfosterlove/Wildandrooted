@@ -2295,17 +2295,52 @@
     };
 
 
-    function circleCoreReady(){
+    function getCircleSelectionsFromDOM(){
+      const selections = {};
+      document.querySelectorAll(".circle-pills").forEach(group => {
+        const field = group.dataset.circleField;
+        const active = group.querySelector(".pill.active");
+        selections[field] = active ? active.textContent.trim() : "";
+      });
+      return selections;
+    }
+
+    function syncCircleStateFromDOM(){
+      const selections = getCircleSelectionsFromDOM();
+      Object.keys(circleState).forEach(k => {
+        circleState[k] = selections[k] || "";
+      });
+      return selections;
+    }
+
+    function circleMissingFields(){
+      const selections = getCircleSelectionsFromDOM();
       const required = ["energy","bandwidth","weather","season","focus","time","place","attention","sensory","dynamic"];
-      return required.every(k => circleState[k] && circleState[k].trim() !== "");
+      return required.filter(k => !selections[k]);
     }
 
     function forceCircleButtonState(){
       const btn = byId("generateCircleBtn");
       if(!btn) return;
-      const ready = circleCoreReady();
+      const missing = circleMissingFields();
+      const ready = missing.length === 0;
       btn.disabled = !ready;
-      btn.textContent = ready ? "Build our Circle Time ✨" : "Choose circle time inputs";
+      if(ready){
+        btn.textContent = "Build our Circle Time ✨";
+      } else if(missing.length === 1){
+        btn.textContent = "1 choice left";
+      } else {
+        btn.textContent = `${missing.length} choices left`;
+      }
+    }
+
+
+    function updateCircleButton(){
+      forceCircleButtonState();
+    }
+
+    function circleCoreReady(){
+      return circleMissingFields().length === 0;
     }
 
     function selectCirclePill(button){
@@ -2313,15 +2348,7 @@
       const field = group.dataset.circleField;
       group.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
       button.classList.add("active");
-      circleState[field] = button.textContent.trim();
-      forceCircleButtonState();
-    }
-
-    function circleReady(){
-      return Object.values(circleState).every(v => v && v.trim() !== "");
-    }
-
-    function updateCircleButton(){
+      syncCircleStateFromDOM();
       forceCircleButtonState();
     }
 
@@ -2353,7 +2380,14 @@
     }
 
     function buildCirclePlan(){
-      if(!circleCoreReady()) return;
+      syncCircleStateFromDOM();
+      if(!circleCoreReady()){
+        forceCircleButtonState();
+        const firstMissing = circleMissingFields()[0];
+        const firstGroup = firstMissing ? document.querySelector(`.circle-pills[data-circle-field="${firstMissing}"]`) : null;
+        if(firstGroup) firstGroup.scrollIntoView({ behavior:"smooth", block:"center" });
+        return;
+      }
       const s = circleState;
       const theme = getCircleTheme();
       const length = getCircleLength();
@@ -2461,6 +2495,7 @@
     function resetCircleTime(){
       document.querySelectorAll(".circle-pills .pill").forEach(p => p.classList.remove("active"));
       Object.keys(circleState).forEach(k => circleState[k] = "");
+      syncCircleStateFromDOM();
       byId("circleResult").classList.add("hidden");
       updateCircleButton();
     }
@@ -2507,17 +2542,21 @@
     }
 
 
+    init();
+
     // Circle Time safety pass: makes the Circle button work even if browser cached older handlers.
     setTimeout(() => {
       document.querySelectorAll(".circle-pills .pill").forEach(btn => {
         btn.onclick = () => selectCirclePill(btn);
       });
       const circleBtn = byId("generateCircleBtn");
-      if(circleBtn) circleBtn.onclick = buildCirclePlan;
+      if(circleBtn) {
+        circleBtn.onclick = buildCirclePlan;
+        circleBtn.addEventListener("click", buildCirclePlan);
+      }
+      syncCircleStateFromDOM();
       forceCircleButtonState();
     }, 50);
-
-    init();
   </script>
 </body>
 </html>
