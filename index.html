@@ -2294,13 +2294,27 @@
       time: "", place: "", attention: "", sensory: "", dynamic: ""
     };
 
+
+    function circleCoreReady(){
+      const required = ["energy","bandwidth","weather","season","focus","time","place","attention","sensory","dynamic"];
+      return required.every(k => circleState[k] && circleState[k].trim() !== "");
+    }
+
+    function forceCircleButtonState(){
+      const btn = byId("generateCircleBtn");
+      if(!btn) return;
+      const ready = circleCoreReady();
+      btn.disabled = !ready;
+      btn.textContent = ready ? "Build our Circle Time ✨" : "Choose circle time inputs";
+    }
+
     function selectCirclePill(button){
       const group = button.closest(".circle-pills");
       const field = group.dataset.circleField;
       group.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
       button.classList.add("active");
       circleState[field] = button.textContent.trim();
-      updateCircleButton();
+      forceCircleButtonState();
     }
 
     function circleReady(){
@@ -2308,10 +2322,7 @@
     }
 
     function updateCircleButton(){
-      const btn = byId("generateCircleBtn");
-      if(!btn) return;
-      btn.disabled = !circleReady();
-      btn.textContent = circleReady() ? "Build our Circle Time ✨" : "Choose circle time inputs";
+      forceCircleButtonState();
     }
 
     function circleLine(text){
@@ -2342,7 +2353,7 @@
     }
 
     function buildCirclePlan(){
-      if(!circleReady()) return;
+      if(!circleCoreReady()) return;
       const s = circleState;
       const theme = getCircleTheme();
       const length = getCircleLength();
@@ -2472,6 +2483,7 @@
 
       document.getElementById("generateBtn").addEventListener("click", generateResult);
       document.getElementById("generateCircleBtn").addEventListener("click", buildCirclePlan);
+      document.getElementById("generateCircleBtn").onclick = buildCirclePlan;
       document.getElementById("respinCircleBtn").addEventListener("click", buildCirclePlan);
       document.getElementById("resetCircleBtn").addEventListener("click", resetCircleTime);
       document.getElementById("copyInviteBtn").addEventListener("click", copyInvite);
@@ -2493,6 +2505,17 @@
       renderMemories();
       updateGenerateButton();
     }
+
+
+    // Circle Time safety pass: makes the Circle button work even if browser cached older handlers.
+    setTimeout(() => {
+      document.querySelectorAll(".circle-pills .pill").forEach(btn => {
+        btn.onclick = () => selectCirclePill(btn);
+      });
+      const circleBtn = byId("generateCircleBtn");
+      if(circleBtn) circleBtn.onclick = buildCirclePlan;
+      forceCircleButtonState();
+    }, 50);
 
     init();
   </script>
